@@ -1,0 +1,772 @@
+﻿######################################
+#  Adventuron                        #
+######################################
+
+######################################
+#  Game Information                  #
+######################################
+game_information {
+   game_name         = Une déclaration d’amour un peu spéciale
+   game_shortname    = DéclarationFR
+   written_by        = manonamora
+   year_of_original  = 2023
+   year_of_release   = 2023
+   uuid              = 5d9e43d1-ca0b-4f75-9766-df18e171b1c3
+   short_synopsis    = Déclare ton amour à la bonne portante laitière.
+   game_version      = 0.1.0
+   aimed_at          = [teenagers]
+   translated_by     = manonamora
+}
+
+start_at          = start
+start_theme       = inside_theme
+loading_screen    = test
+language          = spanish
+game_type         = text_adventure
+
+######################################
+#  On Startup                        #
+######################################
+on_startup {
+   : clear_screen;
+   : print "^c^Une délaration d'amour \n a parser monstrocity \n by manonamora";
+   : print "Une déclaration d'amour, (c) manonamora; Adventuron Software Limited.";
+   : print "A weird thingy";
+   : press_any_key ;
+   
+   : clear_screen;
+   : print "Adventuron is a parser processor working with a verb-noun processor, which means most actions can be done with a verb and noun only.";
+   : press_any_key ;
+   //Not finished
+}
+######################################
+#  Themes                            #
+######################################
+themes {
+//TODO
+   base_theme : theme {
+      theme_settings {
+         capitalization  = camel
+         font            = kitchensink
+         columns = 80
+         columns_mobile = 48
+      }
+      colors {
+         border = #eee
+         paper = #000
+      }
+      
+      
+   }
+   inside_theme : theme {
+      colors {
+         border = #eee
+         paper = #ccc
+         pen = #555
+      }
+      status_bar { //the up bar, maybe a turn?
+         : fixed_text "GAME TITLE" ;
+      }
+      theme_settings {
+         layout = SB G D X
+      }
+      
+   }
+}
+######################################
+#  Vocabulary                        #
+######################################
+vocabulary {
+ #   : verb / aliases = [écrire, ecrire]
+   : verb / aliases = [s, sud];
+   : verb / aliases = [n, nord];
+   : verb / aliases = [e, est];
+   : verb / aliases = [o, ouest];
+   : verb / aliases = [x, examiner, inspecter, éxaminer];
+   : verb / aliases = [r, m, regarder];
+   : verb / aliases = [i, inventaire];
+   : verb / aliases = [salvar, sauver, sauvegarder];
+   : verb / aliases = [cargar, charger];
+   : verb / aliases = [p, prendre, saisir, agripper, arracher, attraper, emparer, happer, ramasser, obtenir, approprier, confisquer, enlever, collecter, récupérer];
+   : verb / aliases = [dejar, drop, laisser, quitter, poser, jeter, déposer];   
+   : verb / aliases = [aide, help, ayuda, hint, indice, indication, piste, manuel, instruction, guide];
+   : verb / aliases = [fin, recommencer, redémarrer, redémarrage, restart, quit];
+   : verb / aliases = [melanger, mélanger];
+   : verb / aliases = [secher, sécher];
+   : verb / aliases = [deverouiller, déverouiller];
+   ////////////////////////////////////////
+   : noun / aliases = [etagere, étagère, letagere, létagère];
+   : noun / aliases = [telephone, téléphone];
+   : noun / aliases = [cle, clé];
+   : noun / aliases = [ingredient, ingredients, ingrédent, ingrédients];
+   : noun / aliases = [epice, épice];
+   : noun / aliases = [epluchures, epluchure, épluchures, épluchure];
+   : noun / aliases = [evier, évier];
+   : noun / aliases = [oeuf, oeufs];
+}
+######################################
+#  Connections                       #
+######################################
+connections {
+   from, direction, to = [
+      bedroom, south, livingroom,
+      livingroom, east, kitchen, 
+      livingroom, leave, outside, 
+      outside, west, chicken_coop,
+      chicken_coop, west, inside_coop, 
+      inside_coop, enter, nest_coop,
+      outside, east, shed,
+      outside, south, gate,
+   ]
+}
+######################################
+#  Objects                           #
+######################################
+objects {
+   //~~~~ Chambre
+   //Dans l'étagère
+    poetry_book : object "un recueil de poèmes de Stig Larsson";
+   history_book : object "un livre sur l’Histoire des messages codés, à travers les âges";
+       spy_book : object "un roman d’espionnage, où une espionne envoit des messages codés avec des œufs";
+         recipe : object "des instructions pour créer des œufs codés";
+   //Sur le bureau
+            pen : object "un stylo";
+   //Sur la table de nuit
+          phone : object "un téléphone à clapet";
+   
+   //~~~~Kitchen
+           alum : object "un pot d’alun";
+     empty_alum : object "un pot vide, contenant auparavant de l’alun";
+   veggie_scrap : object "une boîte remplie des épluchures";
+     half_scrap : object "une boîte avec des épluchures";
+    empty_scrap : object "une boîte vide";
+
+   //~~~~Livingroom
+         shed_key : object "la clé de la cabane de jardin";
+         pigments : object "un flacon de pigment";
+   empty_pigments : object "un flacon vide";
+       bottle_ink : object "un flacon rempli avec la mixture";
+            brush : object "un pinceau";
+
+   //~~~~Coop
+   chicken : scenery "des poules" at = "inside_coop";
+   egg : object "des oeux" at = "nest_coop";
+
+   //~~~~Shed
+   crowbar : object "un pied-de-biche";
+   hammer : object "un marteau";
+   screwdriver : object "un tournevis";
+   ax : object "une scie";
+   shovel : object "une pelle"; 
+
+   //~~~~Gate   
+   maid : scenery "une laitière" at = "gate"; //at the gate or she only appears when the eggs are ready? -> when call/text
+} 
+
+######################################
+#  Variables                         #
+######################################
+booleans {
+   pigment_bowl : boolean "false";
+   alum_bowl : boolean "false";
+   scrap_coop : boolean "false";
+   chicken_here : boolean "true";
+   ink_ready : boolean "false";
+   pan_water : boolean "false";
+}
+integers {
+   eggs_left : integer "6" min="0";
+   eggs_ready : integer "0" max="6";
+}
+######################################
+#  Locations                         #
+######################################
+
+locations {
+//START TODO
+   start : location "This will be the explanation" {
+      on_describe {
+         : print "Test" ;
+         : press_any_key ;
+         : clear_screen;
+         : goto "bedroom" ;
+         : redescribe;
+      }
+   };
+
+   bedroom : location "Vous êtes dans la chambre." {
+      on_describe {
+         : print "La chambre comprend une étagère, un bureau, une table de nuit, et un lit." ;
+      }
+      on_command {
+      // Lit
+         : match "examiner lit"  {
+            : print "Vous ne trouvez rien d’intéressant." ;
+         }
+         : match "dormir -"  {
+            : print "Vous venez de vous réveiller, votre corps n’est pas fatigué." ;
+         }
+         
+      // Étagère
+         : match "examiner etagere"  {
+            : print "L’étagère est pleine de livre de toute sortes. Trois livres ont l’air un peu usés: un recueil de poésie, un livre d’Histoire, et un roman d’espionnage." ;
+         }
+         : match "prendre etagere"  {
+            : print "Pourquoi?\nVous n’avez pas prévu de déménager." ;
+         }
+         : match "examiner recueil"  {
+            : print "^m^Le recueil écrit par Stig Larsson réunit une partie de ses poèmes. En feuilletant les pages, vous trouvez une ligne surlignée: ^i^LA SEULE CHOSE QUI PEUT VOUS SAUVER EST ÉVIDEMMENT LA PERFECTION^m^." ;  
+         }
+         : match "examiner roman"  {
+            : print "Le roman d’espionnage est un livre que vous avez lu à maintes reprises, dans lequel l’espionne arrive à échapper de sa prison en passant des messages via des œufs." ; 
+         }
+         : match "prendre roman;prendre recueil"  {
+            : print {("Vous prenez le "+ original ("noun1") + ", puis le remettez dans l’étagère. Vous n’avez pas le temps de le lire.")};
+         }
+         : match "examiner livre"  {
+            : print "Le livre d’Histoire décrivant l’utilisation des messages codés à travers les âges, a un marque-page à un quart du lourd tome. Le chapitre marqué décrit comment Della Porta communiquait avec des prisonniers en peignant sur des œufs, puis les faisant bouillir pour que le message s’imprime à l’intérieur de l’œuf et s’efface à l’extérieur. Lorsque vous ouvrez la page, une feuille s’échappe." ;  
+         }
+         : match "prendre livre"  {
+            : print "Vous prenez le livre, et le trouvant bien lourd, vous le remettez à sa place dans l’étagère." ;
+         }
+         
+         : match "examiner feuille"  {
+            : print "^m^Sur la feuille a été gribouillé une liste d’instruction: ^n^\n- mélanger de l’alun et des pigments végétaux, \n- peindre l’œuf, \n- faire bouillir l’œuf, \n- nettoyer l’œuf^m^" ;
+         }
+         : match "prendre feuille"  {
+            : if (has_not_created "recipe") {
+               : print "Vous ramassez la feuille." ;
+               : pocket "recipe" ;
+            }
+         }
+         
+         
+      //Desk
+         : match "examiner bureau"  {
+            : print "Vous ne trouvez pas grand chose d’intéressant sur le bureau, à part peut-être un stylo." ;  
+         }
+         : match "prendre stylo"  {
+            : if (has_not_created "pen") {
+               : print "Vous ramassez le stylo." ;
+               : pocket "pen" ;
+            }
+         }
+         
+      //Nightstand
+         : match "examiner table;examiner chevet; examiner table de nuit;examiner table de chevet"  {
+            : print "La table de chevet est dépouillée d’intérêt, ne serait-ce que pour votre téléphone à clapet." ;
+         }
+         : match "examiner telephone"  {
+            : print "Votre téléphone a vu des jours meilleurs, mais tant qu’il fonctionne, vous n’avez aucune intention de le remplacer. Vous ne vous en servez que pour communiquer avec un petit nombre de personnes, donc Clio, la bien portante laitière." ;
+         }
+         : match "take phone"  {
+            : if (has_not_created "phone") {
+               : print "Vous récupérez votre téléphone." ;
+               : pocket "phone" ;
+            }
+         }
+      }
+   };
+   
+   livingroom : location "Vous êtes dans le salon." {
+      on_describe {
+         : print "Dans votre salon bien ordinaire, vous trouvez une petite table contre un mur, sur laquelle un projet a été délaissé. En face, la porte d’entrée est ornée d’un porte clé. \n Vous trouvez aussi Chat, allongé paresseusement sur le rebord de la fenêtre." ;
+      }
+      on_command {
+         : match "prendre cle; prendre cle pour cabane;prendre cle de cabane"  {
+            : if (has_not_created "shed_key"){
+               : print "Vous récupérez la clé de la cabanne du jardin.";
+               : pocket "shed_key" ;
+            }
+         }
+         : match "examiner projet" {
+            :print "Vous avançant vers la table, vous grimacez à l’état de votre projet. Le tableau que vous aviez prévu d’offrir à la laitière est bien loin d’être fini. Autour de la toile, vous trouvez des pinceaux, des flacons de pigments, et un bol.";
+         } 
+
+         : match "prendre pigments;prendre bouteille;prendre flacon"  {
+            : if (has_not_created "pigments") {
+               : print "Vous prenez un des flacons de pigments.";
+               : pocket "pigments";
+            }
+         }
+         : match "prendre pinceau"  {
+            : if (has_not_created "brush") {
+               : print "Vouz prenez le pinceau." ;
+               : pocket "brush" ;
+            }
+         }
+
+      //Ink Puzzle   
+         : match "deposer pigments; deposer pigments dans bol;vider pigments;vider pigments dans bol"  {
+            : if (is_carried "pigments") {
+               : print "Vous videz le flacon de pigments dans le bol.";
+               : swap o1="pigments" o2="empty_pigments";
+               : set_true "pigment_bowl";
+            }
+         }
+         : match "deposer alun;deposer alun dans bol"  {
+            : if (is_carried "alum") {
+               : print "Vous videz le contenu du pot d’alun dans le bol.";
+               : swap o1="alum" o2="empty_alum";
+               : set_true "alum_bowl";
+            }
+         }
+         : match "melanger ingredients;melanger bol" {
+            :if (alum_bowl && pigment_bowl) {
+               :print "Vous mélangez les ingrédients dans le bol, qui forment rapidement un liquide gluant – un peu comme de la peinture.";
+               : set_true "ink_ready";
+            }
+            : else_if (alum_bowl || pigment_bowl) {
+               :print "Vous mélangez les ingrédiens dans le bols, sans effet. Comme si il vous manquait un ingrédient.";
+            }
+            : else {
+               : print "Il n’y a rien dans le bol à mélanger." ;
+            }
+         }
+         : match "remplir bouteille;remplir flacon;prendre mixture;prendre bol" {
+            : if (ink_ready) {
+               : print "Vous embouteillez la mixture dans l’ancien flacon de pigment."
+               : swap o1="empty_pigments" o2="bottle_ink";
+            }
+         }
+
+         : match "caresser chat"  {
+            : print "Vous caressez le chat. Il ronronne." ;
+         }         
+      }
+   };
+
+   kitchen : location "Vous êtes dans la cuisine." {
+      on_describe {
+         : print "La petite cuisine est tout aussi simple et normale que les autres pièces. Vous y trouvez un comptoir, une étagère fermée, une cuisinière avec une casserole, et un évier." ;
+      }
+      on_command {
+         : match "examiner etagere;ouvrir etagere"  {
+            : print "Vous ouvrez l’étagère, et trouvez de la vaisselle, des paquets de nourritures, et de multiples épices (comme un pot d’alun)." ;
+         }
+         : match "prendre alun;prendre epice;prendre pot"  {
+            : if (has_not_created "alum") {
+               : print "Vous récupérez le pot d’alun de l’étagère.";
+               : pocket "alum";
+            }
+            : else_if (is_carried "alum") {
+               : print "Vous avez déjà le pot d’alun dans votre inventaire." ;
+            }
+         }
+         : match "examiner comptoir"  {
+            : print "Vous jetez un coup d’œil vers le comptoir, et trouvez un couteau sur une planche, et une boîte avec des épluchures à côté." ;
+         }
+         : match "prendre couteau" {
+            : print "Vous n’en avez pas besoin."
+         }
+         : match "prendre epluchures"  {
+            : if (has_not_created "veggie_scrap") {
+               : print "Vous prenez la boîtes d’épluchures du comptoir.";
+               : pocket "veggie_scrap";
+            }
+            : else {
+               : print "Vous avez déjà pris la boîte d’épluchures." ;
+            }
+         }
+         : match "examiner evier"  {
+            : print "Il n’y a rien de spécial dans l’évier, vu que vous l’avez nettoyer auparavant. Par contre, vous avez laissé le plug…" ;
+         }
+         : match "examiner plug;prendre plug;enlever plug;regarder plug"  {
+            //go to a plugging passage with links
+         }
+         : match "remplir casserole;ajouter eau dans casserole" {
+            : print "Vous remplissez la casserole d’eau et la remettez sur la cuisinière";
+            : set_true "pan_water";
+         }
+         : match "bouillir oeuf" {
+            : if (pan_water && [EGGS] && [EGGSNOTBOILED] ) {
+               : print "Vous allumez la vuisinière et attendez que l’eau bout.";
+               : press_any_key;
+               : print "Lorsque les bulles apparaîssent, vous y ajoutez les œufs, et attendez de nouveau.";
+               : press_any_key;
+               : print "... et attendez...";
+               : press_any_key;
+               : print "... et attendez encore...";
+               : press_any_key;
+               : print "... et attendez encore un peu..."; 
+               : press_any_key;
+               : print "... pour enfin sortir les œufs de leur bain bouillant. \n L’eau a maintenant une drôle de couleur et les coquilles des œufs ont un peu perdu leurs dessins.";
+   // TO DO COOKED EGGS VARIABLE
+            }
+            : else_if ([EGGSNOTBOILED] ) {
+               : print "Vous ne pouvez pas bouillir des œufs déjà cuits.";
+            }
+            : else_if ([EGGS] ) {
+            }
+            : else_if (pan_water == false) {
+               : print "Vous ne pouvez pas bouillir des œufs dans une casserole vide...";
+            }
+         }
+         : match "nettoyer oeuf;secher oeuf" {
+            : if ([EGGBOILED] ) {
+               : print "Vous séchez les œufs. Les restes de dessins disparaîssent.";
+            }
+            : else_if ([EGGSNOTBOILED] ) {
+               : print "Et effacer votre travail comme si vous n’aviez rien fait? \n Vous remettez les œufs où vous les avez sortis.";
+            }
+         }
+      }
+   };
+   
+   outside : location "Vous êtes dehors." {
+      on_describe {
+         : print "Vous êtes au pas de porte de votre maison. À l’ouest, il y a votre cabane de jardin, et un poulailler à l’opposé. Enfin au sud, le portail de votre propriété – enfin, plus un grillage cloué entre des planches latérales qu’un vrai portail. \n À vos pieds, Chien, un terre-neuve avec une fourrure blanche et noire, dort les pieds en l’air." ;
+      }
+      on_command {
+         : match "utiliser cle;ourvir porte;deverouiller porte" {
+            : if (is_carried "shed_key") {
+               : print "La porte de la cabane est maintenant déverouillée.";
+               : door_operation operation="open_unlock" door="shed_door";
+               : pause "500";
+               : redescribe;
+               : destroy "shed_key" ;
+            }            
+         }
+         : match "caresser chien"  {
+            : print "Vous caressez le chien. Il se réveille en aboyant joyeusement, demandant des petites gratouilles sous le cou. \n Lorsque vous en avez assez, Chien part se dégourdir les jambes dans le jardin." ;
+         }
+      }
+   };
+
+   shed : location "Vous êtes dans la cabane de jardin." {
+      on_describe {
+         :print "Le petit cabanon du jardin est plus ou moins un foutoir. Avec les outils entassés les uns sur les autres, ou les sacs de fertilisant et de terre empilés dans un coin. Vous aviez essayé fut un temps d’organiser tout ça, mais vous avez vite abandonné - c’est pas comme si vous ne trouviez jamais ce que vous avez besoin…" ;
+      }
+      on_command {
+         : match "chercher outil" {
+            : print "Parmi les outils, vous trouvez des scies de toutes tailles, quelques pied-de-biche, plusieurs marteaux et axes, des tournevis, et même une ou deux pelles.";
+         }
+         : match "prendre pied-de-biche;prendre pieddebiche"  {
+            : if (has_not_created "crowbar") {
+               : print "You ramasser le pied-de-biche.";
+               : pocket "crowbar";
+            }
+         }
+         : match "prendre marteau"  {
+            : if (has_not_created "hammer") {
+               : print "You prenez un des marteaux.";
+               : pocket "hammer";
+            }
+         }
+         : match "prendre tournevis"  {
+            : if (has_not_created "screwdriver") {
+               : print "You empochez un trounevis.";
+               : pocket "screwdriver";
+            }
+         }
+         : match "prendre axe"  {
+            : if (has_not_created "ax") {
+               : print "You prenez une axe.";
+               : pocket "ax";
+            }
+         }
+         : match "prendre scie"  {
+            : if (has_not_created "saw") {
+               : print "You récupérez une scie.";
+               : pocket "saw";
+            }
+         }
+         : match "prendre pelle"  {
+            : if (has_not_created "shovel") {
+               : print "You ramasser une pelle.";
+               : pocket "shovel";
+            }
+         }
+      }
+   };
+
+   chicken_coop : location "Vous êtes devant le poulailler."{
+      on_describe {
+         : print "Le poulailler devant vous est une structure faite de bois et métal. À travers le grillage entourant la structure, vous distinguez une petite maisonnette surélevée, à l’intérieur de laquelle vos six poules ont fait leurs nids, et un enclos en partie couvert où les poules vont se dégourdir leurs jambes ou picorer quelques graines.";
+         : if (is_locked coop_door) {
+            : print "Le portail du poulailler est fermé.";
+         }
+         : else_if (chicken_here == false) {
+            //If chicken are outside too
+            : print "Les poules gambadent dans le jardin.";
+         }
+      }
+      on_command {
+         : match "examiner portail;examiner poulailler" {
+            : if (is_locked coop_door) {
+               : print "Vous vous approchez du portail du poulailler, et remarquez que le verrou est endommagé. Cela vous étonne un peu, vu que vous faites toujours attention de bien fermer ce verrou à chaque vois que vous avez fini de vous occuper des poules. Et le verrou était encore en bon état la soirée précédente…";
+            }
+            : else_if (chicken_here == true) {
+               : print "Vous vous approchez du portail du poulailler. Celui-ci est maintenant ouvert. Vous prenez note de remplacer le verrou un de ces jours. \n Vous pouvez aussi voir une ou deux poules s’aventurer hors de la maisonnette couvrant leurs nids.";
+            }
+            : else {
+               : print "Vous vous approchez du portail du poulailler. Celui-ci est encore ouvert. Vous prenez note de remplacer le verrou un de ces jours. \n Les poules ne sont plus à l’intérieur, picorant les épluchures dans le jardin.";
+            }
+         }
+         : match "caresser poule" {
+            : if (chicken_here == false) {
+               : print "Vous caressez les poules. Maintenant que vous leur avez donnés de quoi picorer, elles ne sont plus aussi agressives. Elles vous laissent bien volontiers passer vos doigts à travers leur plumage.";
+            }
+         }
+         : match "open *;abrir *;ouvrir *" {
+            : if (is_locked coop_door) {
+               : print "Le petit portail est verrouillé.";
+            }
+            : else_if (is_blocking coop_door) {
+               : print "Vous ouvrez le petit portail du poulailler.";
+               : redescribe;
+            }
+            : else {
+               : print "Le petit portail est déjà ouvert.";
+            }
+         }
+         : match "deverouiller portail;unlock *;desbloquear *"  {
+            : if (is_locked coop_door) {
+               : print "Le verrou est endommagé. Vous ne pouvez pas ouvrir le petit portail sans aide.";
+            }
+         }
+         : match "utiliser *" {
+            : if (is_locked coop_door) {
+               : if (noun1_is "pieddebiche" || noun1_is "marteau" || noun1_is "pelle") {
+                  : print {("Vous arrivez à ouvrir le petit portail du poulailler en forçant le verrou avec votre "+ original ("noun1") + ". Le verrou cassé tombe à vos pieds.")}; 
+                  : door_operation operation="open_unlock" door="coop_door";
+                  : redescribe;
+               }
+               : else_if (noun1_is "axe" || noun1_is "scie") {
+                  : print {("Vous forcez le verrou avec votre " + original ("noun1") + ", mais ceci ne débloque pas seulement le verrou et ouvre le portail. Vous endommagez aussi la structure du portail.")};
+                  : door_operation operation="open_unlock" door="coop_door";
+                  : redescribe;
+               }
+               : else_if (noun1_is "tournevis") {
+                  : print "Vous essayez de dévisser le verrou du mieux que vous le pouvez avec votre tournevis, mais les vis sont trop endommagées pour que vous ne puissiez faire quoique ce soit. Peut-être avec un autre outil?";
+               }
+               : else {
+                  : print "Le verrou reste bloqué.";
+               }
+            }
+         }
+      }
+   };
+
+   inside_coop : location "Vous êtes à l’intérieur du poulailler." {
+      on_describe {
+         : print "Dans l’enclos du poulailler, vous faites attention où vous mettez les pieds. Même si vous avez nettoyé le poulailler récemment et changé la paille au sol, les poules n’ont pas changé leurs habitudes. Vous prenez note du niveau d’eau dans l’abreuvoir, et de graines dans le mangeoire." ;
+      }
+      on_command {
+         : match "examine poule"  {
+            : if (scrap_coop == false) {
+               : print "Il n’y a seulement qu’une ou deux poules se mêler se leurs oignons, le reste des épluchures d’hier, les autres étant encore au chaud dans la maisonnette. Aucune n’a l’air très contente de vous voir.";
+            }
+            : else_if (chicken_here) {
+               : print "Les poules ne sont toujours pas très contentes de vous voir, mais elles sont au moins toutes hors de la maisonnette. Elles ne vous laissent pas approcher leurs nids par contre." ;
+            }
+            : else {
+               : print "Les poules ne sont plus dans le poulailler.";
+            }
+         }
+         : match "caresser poule"  {
+            : if (chicken_here){
+               : print "La poule vous mord la main.";
+            }
+         }
+         : match "frapper poule;attaquer poule"  {
+            : if (chicken_here){
+               : print "La poule vous attaque en retour, et arrache un morceau de votre pantalon - elle le parade comme un trophée.";
+            }
+         }
+      }
+   };
+   nest_coop : location "Vous avez la tête dans la maisonnette du poulailler." {
+      on_describe {
+         : if (is_carried "egg") {
+            : print "L’ouverture est bien trop étroite pour que vous puissiez entrer, mais elle est assez large pour que vous puissiez étendre votre bras pour atteindre le nids le plus éloigné de vous. \n Devant vous, vous trouvez deux rangées de nids vides.";
+         }
+         : else {
+            : print "L’ouverture est bien trop étroite pour que vous puissiez entrer, mais elle est assez large pour que vous puissiez étendre votre bras pour atteindre le nids le plus éloigné de vous. \n Devant vous, vous trouvez deux rangées de nids, chacun ayant un œuf marron.";
+      }
+      on_command {
+         : match "prendre oeuf;prendre oeufs" {
+            : if(has_not_created "egg") {
+               : print "Vous prenez les œufs de chaque nids minutieusement." ;
+               : pocket "egg"; 
+            }
+         }
+      }
+   };
+   gate : location "This is the gate." ;
+   
+   end : location "This is the end page = result." ;
+   
+}
+######################################
+#  On Tick                           #
+######################################
+on_tick {
+   : if (is_carried "egg" && eggs_left == 0) {
+      : destroy "egg";
+   }
+}
+######################################
+#  On Command                        #
+######################################
+on_command {  
+   : match "examiner alun"  {
+      : if (is_at "kitchen" && has_not_created "alum") {
+         : print "Dans l’étagère, entre les autres pots et paquets d’épices, vous trouvez un pot d’alun. Pas plus haut que votre paume, le pot contient une poudre blanche, que vous utilisez pour faire des cornichons et autres conserves." ;
+      }
+      : else_if (is_carried "alum") {
+         : print "Dans votre poche, vous trouvez un pot d’alun. La poudre blanche normalement utilisée pour faire des conserves, elle est aussi utilisée dans d’autre sorte de projets." ;
+      }
+      : else_if (alum_bowl) {
+         : print "Le pot d’alun est maintenant vide." ;
+      }
+   }
+   : match "examiner pigment;examiner bouteille;examiner flacon"  {
+      : if (is_at "livingroom" && has_not_created "pigments") {
+         : print "Sur la table, vous trouvez des flacons de pigments de différents couleurs. Vous utilisez ces pigments pour peindre le tableau sur cette même table." ;
+      }
+      : else_if (is_carried "pigments") {
+         : print "Dans votre poche, vous trouvez un flacon de pigments. Inconsciement, vous avez pris le flacon vert, la couleur préférée de la laitière." ;
+      }
+      : else_if (is_carried "bottle_ink") {
+         : print "Le flacon dans vos mains est maintenant remplis d’une mixture bien étrange.";
+      }
+      : else_if (ink_ready) {
+         : print "Vous avez dans vos mains un flacon vide." ;
+      }
+   }
+   : match "examiner boite;examiner epluchure"  {
+      : if (is_at "kitchen" && has_not_created "veggie_scrap") {
+         : print "Vous trouvez sur le comptoir une boîte pleine d’épluchures.Vous mettez toujours vos épluchures de côté pour vos petites poules." ;
+      }
+      : else_if (is_carried "veggie_scrap") {
+         : print "Vous avez dans vos mains une boîte pleine d’épluchures. Ce sont les poules qui vont être contentes…" ;
+      }
+      : else_if (scrap_coop) {
+         : print "La boîte d'épluchures est à moitié-vide. Il en reste encore assez pour ruser vos poulettes aggressives." ;
+      }
+      : else_if (chicken_here == false) {
+         : print "Vous avez une boîte vide dans vos mains, ayant éparpillé les épluchures pour vos petites poules." ;
+      }
+   }
+   //Chicken puzzle 
+   : match "jeter epluchure"  {
+      : if (is_at "inside_coop" && is_carried "veggie_scrap") {
+         : print "Vous éparpillez une grosse poignée d’épluchures autours de vous, mais surtout à l’opposé de la maisonnette. Les poules courent vers vous et se battent pour les meilleures pièces. Tout de même, vous les voyez retourner vers la maisonnette lorsque leur bec est rempli.";
+         : set_true "scrap_coop";
+         : swap o1="veggie_scrap" o2="half_scrap";
+      }
+      : else_if (is_at "chicken_coop" && is_carried "veggie_scrap") {
+         : print "Vous éparpillez quelques épluchures devant le poulailler, mais voyant qu’aucune poule n’est intéressée, vous remettez le reste dans la boîte.";
+      }
+      : else_if (is_at "chicken_coop" && is_carried "half_scrap") {
+         : print "Vous éparpillez une partie du reste des épluchures devant le poulailler puis reculez quelques pas pour jeter la dernière poignée. Les poules sont méfiante d’abord, puis se lance en dehors du poulallier pour s’empiffrer.";
+         : set_false "chicken_here" ;
+      }
+   }
+   
+   : match "ecrire oeuf _;ecrire * * oeuf;ecrire * oeuf _" {
+      : if (eggs_left > 0 && is_carried "pen") {
+         : print "Vous essayez d’écrire un message sur l’œuf. Mais la coque étant encore assez fragile, l’œuf se brise sous la pression de votre stylo. \n Et un œuf de moins…";
+         : set_integer var = "eggs_left"  {(eggs_left - 1)} ;
+      }
+      : else_if (eggs_left > 0) {
+         : print "Vous avez besoin d’un stylo pour écrire quoi que ce soit sur un des œufs.";
+      }
+      : else {
+         : print "Il ne vous reste plus d’œuf non customisé.";
+      }
+   }
+   : match "peindre oeuf _;peindre * sur oeuf" { //Other options
+      : if (eggs_left > 0 && is_carried "brush") {
+         : print ""; // HERE
+         : set_integer var = "eggs_left"  {(eggs_left - 1)} ;
+         : set_integer var = "eggs_ready"  {(eggs_ready + 1)} ;
+      }
+      : else_if (eggs_left > 0) {
+         : print "Vous avez besoin d’un pinceau pour peindre quoi que ce soit sur un des œufs.";
+      }
+      : else {
+         : print "Il ne vous reste plus d’œuf non customisé.";
+      }
+   }
+// The egg puzzle   
+   : match "write love on egg"  {
+   //if you have the pen and not the brush -> break egg -> remove egg
+      : if (is_carried "egg" && eggs_left > 0) {
+         : print "You wrote love on an egg";
+         : set_integer var = "eggs_left"  {(eggs_left - 1)} ;
+         : set_integer var = "eggs_ready"  {(eggs_ready + 1)} ;
+      }
+   }
+// Maid discussion => could potentially move to new passage to talk to her
+   : match "call maid"  {
+      : if (is_carried "phone") {
+         : print "Talk to the maid";
+         : add_choice "choice 1"  {
+            : print "this" ;
+            : add_choice "sub choice"  {
+               : print "and this" ;
+            }
+            : add_choice "sub choice2"  {
+               : print "and that" ;
+            }
+            : choose "about this?" ;
+         }
+         : add_choice "choice 2"  {
+            : print "that" ;
+         }
+         : choose "What do you say?" ;
+      }
+      : else {
+         : print "You need a phone to call the maid" ;
+      }
+      
+   }
+   : match "text maid"  {
+      : if (is_carried "phone") {
+         : print "You messaged the maid that her eggs were ready" ;
+         : press_any_key ;
+         : goto "end" ;
+         : redescribe;
+         
+      }
+      : else {
+         : print "You need a phone to text the maid" ;
+      }
+      
+   }
+   
+}
+
+######################################
+#  Barriers                          #
+######################################
+barriers {
+   coop_door : door {
+      from  = chicken_coop
+      to    = inside_coop
+      key   = crowbar
+      on_unlock {
+         : print "You opened the door with the crowbar" ;
+      }
+   }
+   chicken_block : block {
+      location = nest_coop
+      message  = The chickens are guarding the eggs. You need them to scamper to get to the eggs.
+      block_when = chicken_here
+   }
+   shed_door : door {
+      from = outside
+      to   = shed
+      key  = shed_key
+   }
+}
+######################################
+#  Assets                            #
+######################################
+assets {
+   graphics {
+      test: placeholder;//Need graphic here
+   }
+}
