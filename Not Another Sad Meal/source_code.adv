@@ -1,13 +1,7 @@
 ######################################
-# Future Update?
-# optional: toast bread on pan
-# optional: amount of eggs
-# optional: boil eggs
-# optional: spices -> countertop
-######################################
 #  Adventuron                        #
 ######################################
-   # Lunch Time!
+   # Not Another Sad Meal
    # a game by manonamora
 ######################################
 #  Game Information                  #
@@ -85,12 +79,12 @@ on_startup {
    : print "^c^^b^<Not Another Sad Meal<4>>"; 
    : print "^c^Time to turn things around!";
    : print "^c^<---<13>>";
-   : print "^c^A silly little cooking sim \n by <manonamora<12>>[https://manonamora.itch.io/]";
+   : print "^c^^n^A silly little cooking sim \n by <manonamora<12>>[https://manonamora.itch.io/]";
    : print "^c^<- - -<13>>";
-   : print "^c^Version 0.1.0 - Adventuron";
+   : print "^c^Version 0.2.0 - Adventuron";
    : print "^c^<- - -<13>>";
    : print " ";
-   : print "<Press ENTER or SPACE or Click on the Screen when the yellow cursor is blinking.<5>>";
+   : print "<Press ENTER or SPACE, or Click on the Screen when the yellow cursor is blinking.<5>>";
    : press_any_key;
 
    : clear_screen;
@@ -104,7 +98,7 @@ on_startup {
    
    : clear_screen;
    : print "^c^^i^<Uuuuurrrrgggggghhhh<5>>";
-   : print "It is incredibly hungover that you wake up this morning - or, well, more like afternoon at this point. You drank yourself silly the previous night, as you have done many nights before that: hoping to forget it all, or, at best, ease the pain.";
+   : print "Incredibly hungover is how you wake up this morning - or, <^i^well>, more like afternoon, at this point. You drank yourself silly the previous night, as you have done many nights before that: hoping to forget it all, or, at best, ease the pain.";
    : print "You have been in this sorry state ever since <^i^she> left. Inconsolable. Miserable. Wretched.";
    : press_any_key ;
    
@@ -114,7 +108,7 @@ on_startup {
    : print "And you are tired of this pain and hurt.";
    : print "And you wish for morning when you don't feel disgusting and small and hopeless.";
    : print "And you hope <^i^she> disappears from your thoughts.";
-   : print "And you want to get better - because <^i^she> is already.";
+   : print "And you want to get better - because <^i^she> already has.";
    : press_any_key ;
    : print "Someday.";
    : print "^c^^i^<Uuuuurrrrgggggghhhh.<5>>";
@@ -130,18 +124,21 @@ on_startup {
    : print "You'll start today, then. No more crying in your pillow. No more eating tubs of ice cream and sobbing in your empty bathtub. No more ordering take out - not because it makes you sadder, but you should really take a break. No more downing bottles of tequila because what else are you going to do...";
    : press_any_key ;
    : print "^c^^i^<Uuuuurrrrgggggghhhh.<5>>";
-   : print "Right. So, to start in this new journey, you're going to make yourself something special. A good and filling meal that will erase all your troubles and set you <^i^straight>... er. On a straighter path.";
+   : print "Right. So, to start in this new journey, you're going to make yourself something special. A good and filling meal that will erase all your troubles and set you <^i^straight>-";
+   : print "^c^^i^<Uuurrgghh!<5>>";
+   : print "... er. On a straighter path.";
    : press_any_key ;
-   : print "^c^^i^<Uuuuurrrrgggggghhhh<5>>";
+   : print "^c^^i^<Uuuuurrrrgggggghhhh...<5>>";
    : print "Yes, your stomach is also wanting for substenance...";
    : press_any_key ;
    
    : clear_screen;
    : print "^c^^i^<Uuuuurrrrgggggghhhh?<5>>";
-   : print "Having a vague memory of what is in your kitchen - where you are now dragging your sore body towards - three options are available to you:";
-   : print "* <^i^Deluxe Toast<12>>: a slice of bread where sliced avocado, sliced tomato, and a sunny-side-up egg (cooked in butter, obviously) is stacked on top - in this order!";
-   : print "* <^i^Cursed Pizza<12>>: a random frozen pizza where the strangest toppings were added: tuna and tangerine - Oh, and they are also canned.";
+   : print "Having but a vague memory of what should currently be in your kitchen - where you are now dragging your sore body towards - three options are available to you:";
+   : print "* <^i^Deluxe Toast<12>>: a slice of bread where sliced avocado, sliced tomato, and a sunny-side-up egg (cooked in butter, obviously) are stacked on top - <^i^in this order>!";
+   : print "* <^i^Cursed Pizza<12>>: a random frozen pizza where the strangest toppings were added: tuna and tangerine - oh, and they are also canned.";
    : print "* <^i^Fancy Noodles<12>>: a healthier version of instant noodles, with vegetables, eggs and cheese.";
+   : print "There are a handful of spices and seasonings available to you, which are optional to complete the recipe - your stomach has not settled quite just yet...";
    : press_any_key ;
    : print "^c^^i^<Uuurrgghh?<5>>";
    : print "You're on your own now! Be careful not to mess up the food.";
@@ -161,6 +158,7 @@ booleans {
       
    # Deluxe Toast
       bread_sliced : boolean "false";
+         bread_toased : boolean "false";
       avocado_sliced : boolean "false";
          avocado_toast : boolean "false";
       tomato_sliced : boolean "false";
@@ -174,6 +172,7 @@ booleans {
       pizza_in_pan : boolean "false";
          tuna_on_pizza : boolean "false";
          tangy_on_pizza : boolean "false";
+         cheese_on_pizza : boolean "false";
          pizza_cooked : boolean "false";
       
    # Fancy Noodles
@@ -185,7 +184,7 @@ booleans {
          eggnoods_cooked : boolean "false";
       cheese_on_noods : boolean "false"; 
          cheese_cooked : boolean "false";
-         
+
    # visited rooms
       kitchen_ok : boolean "false";
       cupboard_ok : boolean "false";
@@ -221,6 +220,10 @@ objects {
       noodles : object "a pack of instant noodles";
       bread : object "a small loaf of bread" at = "counter";
          sliced_bread : object "some sliced bread";
+         toasted_bread : object "some toasted sliced bread"; #
+      salt : object "a salt shaker"; # need to X
+      pepper : object "a pepper shaker"; #
+      tabasco : object "a tabasco bottle"; #
    #freezer
       pizza : object "a frozen pizza box"; 
       veggies : object "a package of frozen veggies";
@@ -234,6 +237,7 @@ objects {
       eggs :  object "two eggs";
          cooked_egg : object "two sunny side-up eggs" ;
       cheese : object "a pack of cheese";
+      spicy_sauce : object "a bottle of sriracha"; #    
    # final dishes
       deluxe_toast : object "a plated deluxe toast" ;
       cursed_pizza : object "a plated (cursed) delicious pizza";
@@ -252,6 +256,7 @@ vocabulary {
       : verb / aliases = [put, add];
       : verb / aliases = [plate, serve];
       : verb / aliases = [slice, cut];
+      : verb / aliases = [taste, lick];
    # nouns
       : noun / aliases = [egg, eggs];
       : noun / aliases = [shelves, shelf];
@@ -260,8 +265,9 @@ vocabulary {
       : noun / aliases = [chest , freezer];
       : noun / aliases = [noodle, noodles];
       : noun / aliases = [bread, loaf, toast];
+      : noun / aliases = [sriracha, sauce];
+      : noun / aliases = [burner, burners];
 }
-
 
 ######################################
 #  Rooms/Location                    #
@@ -272,13 +278,16 @@ locations {
    kitchen : location "You are in the kitchen." header = "Kitchen" {
       on_describe {
          : if (!kitchen_ok) {
-            : print "You stagger a bit inside the room, clearly failing to keep your balance. But you need to steel yourself if you want to make a proper meal.";
+            : print "You stagger a bit inside the room, clearly failing to keep your balance. But you need to steel yourself if you want to make a proper <meal<12>>[REMEMBER].";
             : print "And hunt down the ingredients...";
             : set_true "kitchen_ok" ;
          }
          
          : if (!counter_ok) {
-            : print "A yeasty and warm smell floats in the air, wrapping you with comfort.";
+            : print "A yeasty and warm <smell<12>>[SMELL] floats in the air, wrapping you with comfort.";
+         }
+         : else_if (!bread_sliced) {
+            : print "That yeasty <smell<12>>[SMELL] still lingers in the room.";
          }
          
          : print "You can see a <cupboard<12>>[OPEN CUPBOARD], a <fridge<12>>[OPEN FRIDGE], a <stove<12>>[X STOVE] and a <counter<12>>[X COUNTER]. There is also a <table<12>>[X TABLE] where you sit during your meals.";
@@ -288,6 +297,26 @@ locations {
          }
       }
       on_command {
+         : match "smell" {
+            : if (!counter_ok) {
+               : print "You sniff the air, and a familiar scent embalms your nostrils. Yeasty and comforting, warm like the sun kissing your face. It makes you think of better days.";
+               : print "<^i^Why is this making me hungry?<5>>";
+            }
+            : else_if (!bread_sliced) {
+               : print "Your stomach grumbles just thinking about the bread waiting for you in the machine. Your mouth waters, and your hands twitches in anticipation. You could devour the loaf. Right here. Right now.";
+            }
+            : else_if (is_carried "toasted_bread") {
+               : print "The smell is not just embalming the room, but your pocket too!";
+            }
+         }
+
+         : match "taste _" {
+            :if (!noun1_is "toast") {
+               : print "WHY? Just... why?";
+               : print "You're hungover, not drunk anymore. Make a dish first if you want to taste something.";
+            }
+         }
+
          : match "x cupboard"  {
             : print "This is just a simple cupboard. You know it holds your plates, pans, and dry food stuff.";
             : print "You can see it is currently closed.";
@@ -299,6 +328,7 @@ locations {
             : clear_screen;
             : redescribe;
          }
+
          : match "x fridge"  {
             : print "This is your old run-of-the-mill fridge with freezer combo. You know it holds any food you could not leave in the cupboard.";
             : print "You can see it is currently closed.";
@@ -310,6 +340,7 @@ locations {
             : clear_screen;
             : redescribe;
          }
+
          : match "x stove"  {
             : print "You get closer to the stove and...";
             : press_any_key;
@@ -331,6 +362,7 @@ locations {
             : clear_screen;
             : redescribe;
          }
+
          : match "n ; s ; e ; w ; ne ; nw ; se ; sw ; leave kitchen ; up ; down ; exit ; in" {
             : print "You are not leaving the kitchen until you've had some food in your stomach!";
             : print "What's the point of trying to be a better you if you can't even do <^i^that>?";
@@ -341,8 +373,8 @@ locations {
    cupboard : location "You are in front of the opened cupboard." header = "Cupboard" {
       on_describe {
          : if (!cupboard_ok) {
-            : print "You grimace at the remnants of a torned sticker on the inside of the door. <^i^She> had been the one to put it there, when she moved in - as a reminder or something. It took you a while to get used to it. It was an ugly sticker..."; 
-            : print "And in a fit of rage, <^i^she> ripped it off, just to spite you. You tried to find it again, a replacement to cover it. But it was one of those one-off prints.";
+            : print "You grimace at the remnants of a torned sticker on the inside of the door. <^i^She> had been the one to put it there, when she moved in - as a reminder or something. It took you a while to get used to it. It was an ugly sticker... but you liked it."; 
+            : print "And in a fit of rage, <^i^she> ripped it off, just to spite you. You tried to find it again, a replacement to cover it. But it was one of those one-off prints - they go for hundreds, now.";
             : print "<^i^Maybe I'll just paint it over...<5>>";
             : set_true "cupboard_ok" ;
          }
@@ -371,10 +403,9 @@ locations {
 
          : match "x pans" {
             : if (has_not_created "pan"){
-               : print "The available range of pots and pans in your posession is quite limited: ^b^two.";
+               : print "The available range of pots and pans in your posession is quite limited: <^b^two>.";
                : print "You only have two. A single pair. You used to have more, but <^i^she>...";
                : print "<^i^No!<5>> You only should think about lunch. ^i^Lunch means cooking. Cooking means pots and pans.";
-            
                : print "You look again inside the cupboard and see: a <pan<12>>[T PAN] and a small sauce pan - a mini <pot<12>>[X POT] if you will";
             }
             : else {
@@ -383,7 +414,7 @@ locations {
             }
          }
          : match "x pot ; x sauce _ pan"  {
-            : print "In the corner of the cupboard, you find a pretty small sauce pan: big enough to cook some instant noodles when that's the only thing left in your pantry, but too tiny to make yourself some spagetti.";
+            : print "In the corner of the cupboard, you find a pretty small sauce pan: big enough to cook some instant noodles when that's the only thing left in your pantry, but too tiny to make yourself some spagetti. Mac-n-cheese is still doable... sometimes.";
             : print "How you miss that large pot you used to own. The stews and chilis you'd make...";
             : print "<^i^Why did you have to take it too?<5>>";
          }
@@ -407,13 +438,13 @@ locations {
 
          : match "x food; x food _ stuff; x stuff"  {
             : if (has_not_created "noodles") {
-               : print "Inside the cupboard, you find a bunch of food, mainly the 'dry' kind. Among the handful of <pasta<12>>[X PASTA] and <rice<12>>[X RICE] packages, opened (and probably empty) <snacks<12>>[X SNACKS] ones, and a single <potato<12>>[X POTATO], you find some <cans<12>>[X CANS], and a lonely pack of instant <noodles<12>>[T NOODLE].";
-               : print "You used to have a good rack of spices too, but <^i^she> took them with her - even thought she sucks at cooking!";
+               : print "Inside the cupboard, you find a bunch of food, mainly the 'dry' kind. Among the handful of <pasta<12>>[X PASTA] and <rice<12>>[X RICE] packages, opened (and probably empty) <snacks<12>>[X SNACKS] ones, and a single <potato<12>>[X POTATO], you find some <cans<12>>[X CANS], a tiny box of <spices<12>>[X SPICES], and a lonely pack of instant <noodles<12>>[T NOODLE].";
+               : print "You used to have a full rack of spices too, but <^i^she> took them with her - even thought she sucks at cooking!";
             }
             : else {
-               : print "Inside the cupboard, you find a bunch of food, mainly the 'dry' kind. Among the handful of <pasta<12>>[X PASTA] and <rice<12>>[X RICE] packages, opened (and probably empty) <snacks<12>>[X SNACKS] ones, and a single <potato<12>>[X POTATO], you find some <cans<12>>[X CANS].";
+               : print "Inside the cupboard, you find a bunch of food, mainly the 'dry' kind. Among the handful of <pasta<12>>[X PASTA] and <rice<12>>[X RICE] packages, opened (and probably empty) <snacks<12>>[X SNACKS] ones, and a single <potato<12>>[X POTATO], you find some <cans<12>>[X CANS] and a tiny box of <spices<12>>[X SPICES],.";
                : print "<^i^I should buy some more noodles soon...<5>>";
-               : print "You used to have a good rack of spices too, but <^i^she> took them with her - even thought she sucks at cooking!";
+               : print "You used to have a full rack of spices too, but <^i^she> took them with her - even thought she sucks at cooking!";
             }
          }
          : match "t food ; t food _ stuff"  {
@@ -423,7 +454,7 @@ locations {
             : print "With all these almost empty packages, you'd have to suck it up one day and cook them all at the same time for a meal. \n Good thing that today is not that day!";
          }
          : match "t pasta" {
-            : print "None of the packages have enough separately to make a meal. And you're not in the mood of mix-n-matching.";
+            : print "None of the packages have enough separately to make a meal. And you're not in the mood of mix-n-matching. \n Drunk you probably would...";
          }
          : match "x rice ; t rice" {
             : print "You're not going to get far with three grains of rice (barely an exaggeration)! Better look for something else.";
@@ -527,6 +558,90 @@ locations {
                : print "You already cooked your meal. Go ahead and eat it!";
             }
          }
+         : match "x spices" {
+            : print "Wallowing in the despair of your spice loss, you look at the tiny box, your face covered with grief. Gone are the exotic mixes, the spicy peppers and imported herbs, or the bags you bought during your travels. \n ^c^<^i^All is gone, now...<5>>";
+            : if (has_not_created "pepper" && has_not_created "salt" && has_not_created "tabasco") {
+               : print "There is only: <salt<12>>[T SALT], ground <pepper<12>>[T PEPPER], and a bottle of <tabasco<12>>[T TABASCO].";
+            }
+            : else_if (!has_not_created "pepper" && has_not_created "salt" && has_not_created "tabasco") {
+               : print "Aside from the <pepper<12>>, which you pocketed, you see some <salt<12>>[T SALT] and a bottle of <tabasco<12>>[T TABASCO].";
+            }
+            : else_if (has_not_created "pepper" && !has_not_created "salt" && has_not_created "tabasco") {
+               : print "Aside from the <salt<12>>, which you pocketed, you see some ground <pepper<12>>[T PEPPER] and a bottle of <tabasco<12>>[T TABASCO].";
+            }
+            : else_if (has_not_created "pepper" && has_not_created "salt" && !has_not_created "tabasco") {
+               : print "Aside from the <tabasco<12>>, which you pocketed, you see some <salt<12>>[T SALT] and ground <pepper<12>>[T PEPPER].";
+            }
+            : else_if (!has_not_created "pepper" && !has_not_created "salt" && has_not_created "tabasco") {
+               : print "Having already taken the <salt<12>>[T SALT] and the ground <pepper<12>>[T PEPPER], there is only a bottle of <tabasco<12>>[T TABASCO] left.";
+            }
+            : else_if (!has_not_created "pepper" && has_not_created "salt" && !has_not_created "tabasco") {
+               : print "HAving already taken the ground <pepper<12>> and the bottle of <tabasco<12>>, there is only the <salt<12>>[T SALT] shaker left.";
+            }
+            : else_if (has_not_created "pepper" && !has_not_created "salt" && !has_not_created "tabasco") {
+               : print "HAving already taken the <salt<12>> and the bottle of <tabasco<12>>, there is only the  <pepper<12>>[T PEPPER] shaker left.";
+            }
+            : else {
+               : print "You've already taken everything from the spice box. It is now empty.";
+            }
+         }
+         : match "t spices" {
+            : print "You should be more specific there... Not every spice works with every dish.";
+         }
+         : match "t salt"  {
+            : if (!meal_complete){
+               : if (!is_carried "salt") {
+                  : print "You pocket the salt shaker.";
+                  : pocket "salt";
+               }
+               : else_if (!is_carried "salt" && is_present "salt") {
+                 : print "You pick up the salt shaker.";
+                 : pocket "salt";
+               }
+               : else {
+                  : print "Your box of 'spices' is already so tiny, you <^i^really> think you own more than one salt shaker?"; 
+               }
+            }
+            : else {
+               : print "You already cooked your meal. No need to add any more salt... Think of your kidneys!";
+            }
+         }
+         : match "t pepper"  {
+            : if (!meal_complete){
+               : if (!is_carried "pepper") {
+                  : print "You pocket the pepper shaker.";
+                  : pocket "pepper";
+               }
+               : else_if (!is_carried "pepper" && is_present "pepper") {
+                 : print "You pick up the pepper shaker.";
+                 : pocket "pepper";
+               }
+               : else {
+                  : print "Your box of 'spices' is already so tiny, you <^i^really> think you own more than one pepper shaker?"; 
+               }
+            }
+            : else {
+               : print "You already cooked your meal. No need to add any more pepper... Want to sneeze?";
+            }
+         }
+         : match "t tabasco"  {
+            : if (!meal_complete){
+               : if (!is_carried "tabasco") {
+                  : print "You pocket the tabasco bottle.";
+                  : pocket "tabasco";
+               }
+               : else_if (!is_carried "tabasco" && is_present "tabasco") {
+                 : print "You pick up the tabasco bottle.";
+                 : pocket "tabasco";
+               }
+               : else {
+                  : print "Your box of 'spices' is already so tiny, you <^i^really> think you own more than one tabasco bottle?"; 
+               }
+            }
+            : else {
+               : print "You already cooked your meal. No need to add any more tabasco... Think of your stomach.";
+            }
+         }
 
          : match "close cupboard ; leave ; leave cupboard ; go back ; kitchen" {
             : print "You close the cupboard and...";
@@ -545,7 +660,7 @@ locations {
             : print "Honestly, the state of your fridge kind of make you depressed. <^i^Almost empty...<5>> A trip to the grocery store will be needed soon...";
             : set_true "fridge_ok";
          }
-         : print "The fridge has three 'compartments': the freezer <chest<12>>[OPEN CHEST] at the top, the fruit and vegetable <drawer<12>>[OPEN DRAWER] at the bottom, and the <shelves<12>>[X SHELVES] in between.";
+         : print "The fridge has three 'compartments': the freezer <chest<12>>[OPEN CHEST] at the top, the fruit and vegetable <drawer<12>>[OPEN DRAWER] at the bottom, and the <shelves<12>>[X SHELVES] in between. There is also some space in the <door<12>>[X DOOR] for some bottles.";
          : print "You can also <close<12>>[CLOSE FRIDGE] the fridge.";
       }  
       on_command {
@@ -563,7 +678,7 @@ locations {
             : else {
                : print "There is truly nothing inside the freezer, save for some ice taking over the space.";
                : print "<^i^Maybe I should use it to make drinks...<5>>";
-               : print "Should you? Really?...";
+               : print "Should you? <^i^Really>? ...";
             }
          }
          : match "t pizza ; t pizza _ box ; t box"  {
@@ -588,6 +703,7 @@ locations {
             : if (!meal_complete) {
                : if (has_not_created "veggies") {
                   : print "You take the package of frozen vegetables from the freezer. It lumps a bit on one side.";
+                  : print "<^i^Cold...<5>>";
                   : pocket "veggies";
                }
                : else_if (!is_carried "veggies" && is_present "veggies") {
@@ -622,7 +738,7 @@ locations {
          : match "t avocado"  {
             : if (!meal_complete) {
                : if (has_not_created "avocado") {
-                  : print "You pocket the avocado from the drawer.";
+                  : print "You carefully pocket the avocado from the drawer. Any wrong move and it'll become overripe...";
                   : pocket "avocado";
                }
                : else_if (!is_carried "avocado" && is_present "avocado") {
@@ -733,6 +849,49 @@ locations {
                : print "You already cooked your meal. Go ahead and eat it!";
             }
          } 
+
+         : match "x door" {
+            : if (has_not_created "spicy_sauce") {
+               : print "Like with the rest of your... fridge, the door is quite small, fitting only a handful of bottles. Last night, it was still bursting with booze - or so your vague memory makes you believe. Yet, you can see quite a few bottles and cans...";
+               : print "Somehow a few <beer cans<12>>[X BEER], an opened bottle of white <wine<12>>[X WINE], an almost empty bottle of <vodka<12>>[X VODKA], and a bottle of <sriracha sauce<12>>[X SAUCE].";
+            }
+            : else {
+               : print "Left behind in the fridge's door are a few <beer cans<12>>[X BEER], an opened bottle of white <wine<12>>[X WINE], and an almost empty bottle of <vodka<12>>[X VODKA].";
+            }
+         }
+         : match "x beer" {
+            : print "Your basic trashy and pretty much tastless beer in a big ol' can. You think you bought them on a promotion, because you sure as hell wouldn't drink this otherwise.";
+            : print "<^i^Pancakes?<5>>";
+         }
+         : match "x wine" {
+            : print "A cheap bottle of white, of which you've already drank half - probably last night. If you don't drink the rest, you could use it in a stew or a meat sauce...";
+         }
+         : match "x vodka" {
+            : print "You don't even remember buying this, and yet, here it is, in your fridge. From the little there is left, maybe it'd be best pretending friends brough it over and drank with you...";
+         }
+         : match "t beer ; t wine ; t vodka" {
+            : print "<^i^Oh>. We're stopping all this good will of bettering ourselves before we even truly start? Is that the way you want to go at it?";
+            : print "<^i^N--<12>>";
+            : print "No! So put that back down.";
+         }
+         : match "t sauce"  {
+            : if (!meal_complete) {
+               : if (has_not_created "spicy_sauce") {
+                  : print "You pick up the bottle of spicy sauce.";
+                  : pocket "spicy_sauce";
+               }
+               : else_if (!is_carried "spicy_sauce" && is_present "spicy_sauce") {
+                 : print "You pick up the bottle of spicy sauce.";
+                 : pocket "spicy_sauce";
+               }
+               : else {
+                  : print "You already took out the bottle of sriracha... Try to retrace your steps to find it."; 
+               }
+            }
+            : else {
+               : print "You already cooked your meal. Go ahead and eat it!";
+            }
+         } 
          
          : match "close fridge ; leave ; leave fridge ; go back ; kitchen" {
             : print "You close the fridge";
@@ -761,8 +920,11 @@ locations {
       }
       on_command {
          : match "x stove" {
-            : print "Your stove is really just a small cooking plate, with two burners: one large one to fit a pan and a smaller one for a pot. It is barely bigger than one you used to have in college.";
+            : print "Your stove is really just a small cooking plate, with two <burners<12>>[X BURNER]: one large one to fit a pan and a smaller one for a pot. It is barely bigger than one you used to have in college.";
             : print "<^i^That'll do, I guess...> her words still haunt you. <^i^Could be bigger.> And her sigh. You shudder.";
+         }
+         : match "x burner" {
+            : print "There is nothing <^i^that> interesting about the burners. Maybe try to <^i^put a pan on the stove<12>>[PUT PAN ON STOVE]...";
          }
          : match "put pan on stove ; put pan in stove" {
             : if (pan_on_stove) {
@@ -770,6 +932,7 @@ locations {
             }
             : else_if (is_carried "pan") {
                : print "You put the frying pan on the stove.";
+               : print "<^i^Time to add stuff to it!>";
                : set_true "pan_on_stove";
                : destroy "pan";
             }
@@ -848,6 +1011,36 @@ locations {
                : print "<^i^Why am I doing this? I know I need to put in the pizza in the pan before adding toppings.<5>>";
             }
          }
+         : match "put cheese on pizza ; put cheese in pizza ; add cheese to pizza" {
+            : if (dish_started != "the pizza") {
+               : print {("You already started a different dish: " + dish_started + ". You should finish <^i^that one> instead...")};
+            }
+            : else_if (dish_started == "the pizza" && !pizza_cooked) {
+               : if (cheese_on_pizza) {
+                  : print "You've already dumped what was left in the cheese pack on the pizza. Can't add more...";
+                  : print "<^i^Unless I run to the store...<5>>";
+                  : print "But you know you're not in a state of driving... not until you eat something!";
+               }
+               
+               : else_if (is_carried "cheese"){
+                  : print "You rip open the pack of cheese and dump it all on the pizza, before spreading it a bit better over the meal.";
+                  : destroy "cheese";
+                  : set_true "cheese_on_pizza" ;
+               }
+               : else_if (!is_carried "cheese") {
+                  : print "Maybe get some cheese first?";
+               }
+               : else {
+                  : print "AUTHOR: I don't know how you got there, but shoot me a line, cause this shouldn't be possible.";
+               }
+            }
+            : else_if (!pizza_cooked) {
+               : print "Uncooked cheese? On a cooked pizza? Are you sure you aren't still drunk?";
+            }
+            : else {
+               : print "<^i^Why am I doing this? I know I need to put in the pizza in the pan before adding toppings.<5>>";
+            }
+         }
          : match "plate pizza ; put pizza on plate ; put pizza in plate ; put pizza to plate" {
             : if (pizza_cooked) {
                : if (is_carried "plate") {
@@ -867,8 +1060,23 @@ locations {
                : print "You better finish cooking the pizza before trying to plate it...";
             }
          }
-         
-         : match "put butter in pan ; put button on pan ; add butter to pan" {
+
+         : match "put bread in pan ; put bread on pan ; add bread to pan" {
+            : if (is_carried "sliced_bread" && !bread_toased) {
+               : print "You add the bread to the pan, warming it up until you see a golden shine on all sides, until you hear a gratting sound when scratching the surface, until that toasty smell finds its way to your nose...";
+               : print "<^i^Let's not burn that.<5>>";
+               : set_true "bread_toased";
+               : swap o1="sliced_bread" o2 = "toasted_bread";
+            }
+            : else_if (bread_toased) {
+               : print "You already toasted your bread. If you leave it any longer in the pan, you'll burn it!";
+            }
+            : else {
+               : print "It'd be easier to toast some bread if you were carrying some...";
+            }
+         }
+
+         : match "put butter in pan ; put butter on pan ; add butter to pan" {
             : if (dish_started == "the toast" && butter_in_pan) {
                : print "You already added the butter on the pan. Next is the egg!";
             }
@@ -880,7 +1088,7 @@ locations {
                : print "You hear the fat sizzle on the hot pan and smile.";
                : print "<^i^And now, the eggs...<5>>";
             }
-            : else_if (dish_started == "undecided" && !is_carried "butter"){
+            : else_if (dish_started == "undecided" && !is_carried "butter") {
                : print "You need to have a stick of butter in your hands to add it to the pan...";
             }
             : else {
@@ -1028,7 +1236,7 @@ locations {
             }
          }
          : match "plate noodles ; put noodles on plate ; put noodles in plate ; put noodles to plate" {
-            : if (noodles_cooked) {
+            : if (cheese_cooked) {
                : if (is_carried "plate") {
                   : print "You carefully slide the heavy noodles onto the plate...";
                   : press_any_key ;
@@ -1045,13 +1253,147 @@ locations {
                : print "You better finish cooking the noodles before trying to plate it...";
             }
          }
-         
+         : if ((is_carried "salt" || is_carried "pepper" || is_carried "tabasco" || is_carried "spicy_sauce") && (!pizza_cooked || !egg_cooked || !cheese_cooked)) {
+            : match "put _ in pan ; put _ on pan ; put _ to pan" {
+               : if (noun1_is "spice") {
+                  : print "You'll have to be a bit more specific...";
+               }
+               : else_if (!noun1_is "salt" || !noun1_is "pepper" || !noun1_is "tabasco" || !noun1_is "sauce") {
+                  : print "Is that a spice you have in your hands, right now? Are you <^i^sure>?";
+               }
+               : else_if (pizza_cooked || egg_cooked || (cheese_cooked || !noodles_in_pan)) {
+                  : print "Adding it now would ruin what you just cooked...";
+               }
+               : else_if (dish_started == "the pizza" && !pizza_cooked) {
+                  : if (noun1_is "salt") {
+                     : if (is_carried "salt") {
+                        : print "You put a pinch of salt in your hand and sprinkle it all over the pizza - pretending to be that chef whose whole deal is to sprinkle salt on stuff.";
+                        : print "It's a bit embarrassing...";
+                        : destroy "salt";
+                     }
+                     : else {
+                        : print "You can't add salt if you're not carrying some...";
+                     }
+                  }
+                  : else_if (noun1_is "pepper") {
+                     : if (is_carried "pepper") {
+                        : print "You give a good shake to the pepper container over the pizza and see black flakes twirling down the meal.";
+                        : destroy "pepper";
+                     }
+                     : else {
+                        : print "Where's your pepper?";
+                     }
+                  }
+                  : else_if (noun1_is "tabasco") {
+                     : if (is_carried "tabasco") {
+                        : print "You are careful when opening and shaking the bottle over the pizza.Too much and you'll destroy your mouth...";
+                        : destroy "tabasco";
+                     }
+                     : else {
+                        : print "Might want to get the bottle of tabasco...";
+                     }
+                  }
+                  : else_if (noun1_is "sauce") {
+                     : if (is_carried "spicy_sauce") {
+                        : print "You open the bottle and spread some of its liquid on the pizza. It's a very strange combination, with the other ingredients, but you seem to know better?";
+                        : destroy "spicy_sauce";
+                     }
+                     : else {
+                        : print "Having the sriracha bottle in your hands would help...";
+                     }
+                  }
+               }
+               : else_if (dish_started == "the toast" && egg_in_pan && !egg_cooked) {
+                  : if (noun1_is "salt") {
+                     : if (is_carried "salt") {
+                        : print "You put a pinch of salt in your hand and sprinkle it all over the eggs - pretending to be that chef whose whole deal is to sprinkle salt on stuff.";
+                        : print "It's a bit embarrassing...";
+                        : destroy "salt";
+                     }
+                     : else {
+                        : print "You can't add salt if you're not carrying some...";
+                     }
+                  }
+                  : else_if (noun1_is "pepper") {
+                     : if (is_carried "pepper") {
+                        : print "You give a good shake to the pepper container over the eggs and see black flakes twirling down the meal.";
+                        : destroy "pepper";
+                     }
+                     : else {
+                        : print "Where's your pepper?";
+                     }
+                  }
+                  : else_if (noun1_is "tabasco") {
+                     : if (is_carried "tabasco") {
+                        : print "You are careful when opening and shaking the bottle over the eggs.Too much and you'll destroy your mouth...";
+                        : destroy "tabasco";
+                     }
+                     : else {
+                        : print "Might want to get the bottle of tabasco...";
+                     }
+                  }
+                  : else_if (noun1_is "sauce") {
+                     : if (is_carried "spicy_sauce") {
+                        : print "You open the bottle and spread some of its liquid on the eggs. It's a very strange combination, with the other ingredients, but you seem to know better?";
+                        : destroy "spicy_sauce";
+                     }
+                     : else {
+                        : print "Having the sriracha bottle in your hands would help...";
+                     }
+                  }
+               }
+               : else_if (dish_started == "the noodles" && !cheese_cooked && noodles_cooked) {
+                  : if (noun1_is "salt") {
+                     : if (is_carried "salt") {
+                        : print "You put a pinch of salt in your hand and sprinkle it all over the noodles - pretending to be that chef whose whole deal is to sprinkle salt on stuff.";
+                        : print "It's a bit embarrassing...";
+                        : destroy "salt";
+                     }
+                     : else {
+                        : print "You can't add salt if you're not carrying some...";
+                     }
+                  }
+                  : else_if (noun1_is "pepper") {
+                     : if (is_carried "pepper") {
+                        : print "You give a good shake to the pepper container over the noodles and see black flakes twirling down the meal.";
+                        : destroy "pepper";
+                     }
+                     : else {
+                        : print "Where's your pepper?";
+                     }
+                  }
+                  : else_if (noun1_is "tabasco") {
+                     : if (is_carried "tabasco") {
+                        : print "You are careful when opening and shaking the bottle over the eggs. It's a very strange combination, with the other ingredients, but you seem to know better?";
+                        : destroy "tabasco";
+                     }
+                     : else {
+                        : print "Might want to get the bottle of tabasco...";
+                     }
+                  }
+                  : else_if (noun1_is "sauce") {
+                     : if (is_carried "spicy_sauce") {
+                        : print "You open the bottle and spread some of its liquid on the noodles. You stare at the sauce dripping from bits to bits, strangely hypnotised by it.";
+                        : destroy "spicy_sauce";
+                     }
+                     : else {
+                        : print "Having the sriracha bottle in your hands would help...";
+                     }
+                  }
+               }
+               : else {
+                  : print "You need to start a recipe before adding spices to it!";
+               }
+            }
+         }
+
          : match "cook ; cook dish ; cook pizza ; cook egg ; cook noodles" {
             : if (dish_started == "the pizza") {
                : if (tangy_on_pizza && tuna_on_pizza) {
                   : print "Now that all ingredients are on the pan, you're ready to cook the whole.";
                   : print "You turn on the stove and put a lid on the pan.";
                   : print "<^i^And now, to wait...<5>>";
+                  : print "Yes, <wait<12>>[Z].";
                   : set_integer var = "pizza_wait"  value = "3";
                }
                : else_if (!tangy_on_pizza) {
@@ -1101,7 +1443,7 @@ locations {
                   : print "<^i^Aaaaah, no, no, shit!<5>>";
                   : print "It always happen at this point of the cooking process. You're just too hungry and too entranced by the food...";
                   : set_true "cheese_cooked";
-                  : set_true "noodles_cooked" ;
+
                }
                : else_if (egg_on_noods && !eggnoods_cooked) {
                   : print "Though tempted to touch it some more, you leave the eggs be. You know they won't cook any faster if you keep stirring.";
@@ -1178,9 +1520,7 @@ locations {
                   : print "You stare at the cheese, so intently you almost don't realise the slightly charred smell coming from the pan.";
                   : print "<^i^Aaaaah, no, no, shit!<5>>";
                   : print "It always happen at this point of the cooking process. You're just too hungry and too entranced by the food...";
-                  : set_true "cheese_cooked";
-                  : set_true "noodles_cooked" ;
-                  
+                  : set_true "cheese_cooked";                  
                }
                : else_if (egg_on_noods && !eggnoods_cooked) {
                   : print "Though tempted to touch it some more, you leave the eggs be. You know they won't cook any faster if you keep stirring.";
@@ -1226,7 +1566,7 @@ locations {
          }
          : else {
             : print "On the sparce counter space, you find a handful of items, namely: a <knife<12>>[X KNIFE], a cutting <board<12>>[X BOARD], and a <bread<12>>[SLICE BREAD] machine.";
-            : if (dish_started == "the toast" && !meal_complete) {
+            : if (dish_started == "the toast" && is_present "sliced_bread" && !is_carried "sliced_bread" && !meal_complete) {
                : print "And there, to the side, the sliced <bread>[X BREAD] is waiting for you.";
             }
          }
@@ -1257,6 +1597,9 @@ locations {
             }
             : else_if (!avocado_toast) {
                : print "Steam is still escaping from the slices, left on the counter. Their strudy crust glisten in the light. Their fluffy <^i^mie>, the crumb, burst with air pockets, creating a captivating pattern.";
+               : if (bread_toased) {
+                  : append "And that golden shine...";
+               }
                : print "You salivate just looking at it.";
             }
             : else_if (!tomato_toast) {
@@ -1283,6 +1626,13 @@ locations {
                : print "<^i^AAAAaaaahh!<5>>";
                : print "And, you put them right back on the counter. When slicing the bread, the crust protected your digits, but now...";
                : print "<^i^I'll wait until the toast is constructed then...<5>>";
+               : print "<^i^Ooooorrr.... I could toast the bread!>";
+               : add_choice "<^i^Yes! Let's toast it!<5>>" {
+                  : print "So, you do take the bread...";
+                  : pocket "sliced_bread";
+               }
+               : add_choice "<^i^Nah... It's fine.<5>>";
+               : choose "Do you take the sliced bread?";
             }
          }
          : match "eat bread" {
@@ -1356,7 +1706,7 @@ locations {
                : print {("You already started a different dish: " + dish_started + ". You should finish <^i^that one> instead...")};
             }
             : else {
-               : if (bread_sliced) {
+               : if (bread_sliced && (is_present "sliced_bread" || is_present "toasted_bread")) {
                   : if (is_carried "sliced_avocado") {
                      : print "You catefully lay the avocado on the bread, slice by slice, nudging its outlisers back on the yeasty surface.";
                      : print "You obviously lick your fingers again after this.";
@@ -1373,6 +1723,9 @@ locations {
                   : else {
                      : print "AUTHOR: I don't know how you got there, but shoot me a line, cause this shouldn't be possible.";
                   }
+               }
+               : else_if (bread_sliced && !is_present "sliced_bread") {
+                  : print "Gonna be difficult to add some avocado to the bread if there isn't any bread...";
                }
                : else {
                   : print "You don't have any toast... Maybe slice some bread first.";
@@ -1402,6 +1755,9 @@ locations {
                }
                : else_if (!avocado_toast && bread_sliced) {
                   : print "You can't do that! The bread will go all soggy if you put the tomato first...";
+               }
+               : else_if (bread_sliced && (is_present "sliced_bread" || is_present "toasted_bread")) {
+                  : print "Gonna be difficult to add some tomato to the bread if there isn't any bread...";
                }
                : else {
                  : print "You don't have any toast... Maybe slice some bread first.";
@@ -1435,12 +1791,88 @@ locations {
                   : print "You can't do that! The eggs should always go on top of the whole thing...";
                   : print "<^i^Damn it! What's the order again...<5>>";
                }
+               : else_if (bread_sliced && (is_present "sliced_bread" || is_present "toasted_bread")) {
+                  : print "Gonna be difficult to add some eggs to the bread if there isn't any bread...";
+               }
                : else {
                   : print "You don't have any toast... Maybe slice some bread first.";
                }
             }
          }
-
+         : if ((is_carried "salt" || is_carried "pepper" || is_carried "tabasco" || is_carried "spicy_sauce") && (avocado_toast || !meal_complete)) {
+            : match "put _ in toast ; put _ on toast ; put _ to toast" {
+               : if (noun1_is "spice") {
+                  : print "You'll have to be a bit more specific...";
+               }
+               : else_if (!noun1_is "salt" || !noun1_is "pepper" || !noun1_is "tabasco" || !noun1_is "sauce") {
+                  : print "Is that a spice you have in your hands, right now? Are you <^i^sure>?";
+               }
+               : else_if (noun1_is "salt" && is_carried "salt") {
+                  : destroy "salt";
+                  : if (egg_toast) {
+                     : print "You put a pinch of salt in your hand and sprinkle it all over the eggs - pretending to be that chef whose whole deal is to sprinkle salt on stuff.";
+                  }
+                  : else_if (tomato_toast) {
+                     : print "You put a pinch of salt in your hand and sprinkle it all over the tomatoes - pretending to be that chef whose whole deal is to sprinkle salt on stuff.";
+                  }
+                  : else {
+                     : print "You put a pinch of salt in your hand and sprinkle it all over the avocado - pretending to be that chef whose whole deal is to sprinkle salt on stuff.";
+                  }
+                  : print "It's a bit embarrassing..."; 
+               }
+               : else_if (noun1_is "salt" && !is_carried "salt") {
+                  : print "You can't add salt if you're not carrying some...";
+               }
+               : else_if (noun1_is "pepper" && is_carried "pepper") {
+                  : destroy "pepper";
+                  : if (egg_toast) {
+                     : print "You give a good shake to the pepper container over the eggs and see black flakes twirling down the toast.";
+                  }
+                  : else_if (tomato_toast) {
+                     : print "You give a good shake to the pepper container over the tomatoes and see black flakes twirling down the toast.";
+                  }
+                  : else {
+                     : print "You give a good shake to the pepper container over the avocados and see black flakes twirling down the toast.";
+                  }
+               }
+               : else_if (noun1_is "pepper" && !is_carried "pepper") {  
+                  : print "Where's your pepper?";
+               }
+               : else_if (noun1_is "tabasco" && is_carried "tabasco") {
+                  : destroy "tabasco";
+                  : if (egg_toast) {
+                     : print "You are careful when opening and shaking the bottle over the eggs.Too much and you'll destroy your mouth...";   
+                  }
+                  : else_if (tomato_toast) {
+                     : print "You are careful when opening and shaking the bottle over the tomatoes.Too much and you'll destroy your mouth...";  
+                  }
+                  : else {
+                     : print "You are careful when opening and shaking the bottle over the avocado.Too much and you'll destroy your mouth...";  
+                  }
+               }
+               : else_if (noun1_is "tabasco" && !is_carried "tabasco") {
+                  : print "Might want to get the bottle of tabasco...";
+               }
+               : else_if (noun1_is "sauce" && is_carried "spicy_sauce") {
+                  : destroy "spicy_sauce";
+                  : if (egg_toast) {
+                     : print "You open the bottle and spread some of its liquid on the eggs. It's a very strange combination, with the other ingredients, but you seem to know better?";
+                  }
+                  : else_if (tomato_toast) {
+                     : print "You open the bottle and spread some of its liquid on the tomatoes. It's a very strange combination, with the other ingredients, but you seem to know better?";
+                  }
+                  : else {
+                     : print "You open the bottle and spread some of its liquid on the avocado. It's a very strange combination, with the other ingredients, but you seem to know better?";
+                  }
+               }
+               : else_if (noun1_is "sauce" && !is_carried "spicy_sauce") {
+                  : print "Having the sriracha bottle in your hands would help...";
+               }
+               : else {
+                  : print "AUTHOR: I think this might be a bug?";
+               }
+            }
+         }
          : match "put toast on plate ; plate toast ; put toast in plate ; put toast to plate" {
             : if (egg_toast) {
                : if (is_carried "plate") {
@@ -1786,32 +2218,39 @@ on_command {
       }
       : add_choice "Get the walkthrough for the <^i^Deluxe Toast> (SPOILER)" {
          : print "This walkthrough is the minimum required to complete the recipe, even if an element is not described on the page.";
-         : print "OPEN CUPBOARD \n TAKE PLATE \n TAKE PAN \n LEAVE";
-         : print "\n OPEN FRIDGE \n TAKE BUTTER \n TAKE AVOCADO \n TAKE TOMATO \n TAKE EGG \n LEAVE";
-         : print "\n X STOVE \n PUT PAN ON STOVE \n PUT BUTTER IN PAN \n CRACK EGG \n WAIT \n TAKE EGG \n LEAVE"; 
-         : print "\n X COUNTER \n SLICE BREAD \n SLICE AVOCADO \n PUT AVOCADO ON TOAST \n SLICE TOMATO \n PUT TOMATO ON TOAST \n PUT EGG ON TOAST \n PLATE TOAST \n LEAVE";
-         : print "\n X TABLE \n EAT";
+         : print "^n^OPEN CUPBOARD \n TAKE PLATE \n TAKE PAN \n LEAVE";
+         : print "^n^\n OPEN FRIDGE \n TAKE BUTTER \n TAKE AVOCADO \n TAKE TOMATO \n TAKE EGG \n LEAVE";
+         : print "^n^\n X STOVE \n PUT PAN ON STOVE \n PUT BUTTER IN PAN \n CRACK EGG \n WAIT \n TAKE EGG \n LEAVE"; 
+         : print "^n^\n X COUNTER \n SLICE BREAD \n SLICE AVOCADO \n PUT AVOCADO ON TOAST \n SLICE TOMATO \n PUT TOMATO ON TOAST \n PUT EGG ON TOAST \n PLATE TOAST \n LEAVE";
+         : print "^n^\n X TABLE \n EAT";
       }
       : add_choice "Read the recipe for the <^i^Cursed Pizza>" {
          : print "Little preparation is required for the <^i^Cursed Pizza<12>>, for you only need 3 ingredients: a frozen pizza (or leftover one in your fridge) and 2 cans of whatever as topings. The strangest the combination, the better. Cook until the pizza is ready."; 
       }
       : add_choice "Get the walkthrough for the <^i^Cursed Pizza> (SPOILER)" {
          : print "This walkthrough is the minimum required to complete the recipe, even if an element is not described on the page.";
-         : print "OPEN CUPBOARD \n TAKE PLATE \n TAKE PAN \n TAKE TUNA \n TAKE TANGERINE \n LEAVE";
-         : print "\n OPEN FRIDGE \n TAKE PIZZA \n LEAVE";
-         : print "\n X STOVE \n PUT PAN ON STOVE \n PUT PIZZA IN PAN \n PUT TUNA ON PIZZA \n PUT TANGERINE ON PIZZA \n COOK \n WAIT \n WAIT \n WAIT \n PLATE PIZZA \n LEAVE"; 
-         : print "\n X TABLE \n EAT";
+         : print "^n^OPEN CUPBOARD \n TAKE PLATE \n TAKE PAN \n TAKE TUNA \n TAKE TANGERINE \n LEAVE";
+         : print "^n^\n OPEN FRIDGE \n TAKE PIZZA \n LEAVE";
+         : print "^n^\n X STOVE \n PUT PAN ON STOVE \n PUT PIZZA IN PAN \n PUT TUNA ON PIZZA \n PUT TANGERINE ON PIZZA \n COOK \n WAIT \n WAIT \n WAIT \n PLATE PIZZA \n LEAVE"; 
+         : print "^n^\n X TABLE \n EAT";
       }
       : add_choice "Read the recipe for the <^i^Fancy Noodles>" {
          : print "The <^i^Fancy Noodles<12>> are nothing but instant noodles mixed with some vegetables, a few eggs, and some cheese. You will need to cook each a bit before adding the next ingredient. Oh... and the noodles go second in the pan. You don't want them too crispy or soggy."; 
       }
       : add_choice "Get the walkthrough for the <^i^Fancy Noodles> (SPOILER)" {
          : print "This walkthrough is the minimum required to complete the recipe, even if an element is not described on the page.";
-         : print "OPEN CUPBOARD \n TAKE PLATE \n TAKE PAN \n TAKE NOODLES \n LEAVE";
-         : print "\n OPEN FRIDGE \n TAKE VEGGIES \n TAKE CHEESE \n TAKE EGG \n LEAVE";
-         : print "\n X STOVE \n PUT PAN ON STOVE \n PUT VEGGIES IN PAN \n WAIT \n PUT NOODLES IN PAN \n WAIT \n CRACK EGG \n WAIT \n PUT CHEESE IN PAN \n WAIT \n PLATE NOODLES \n LEAVE"; 
-         : print "\n X TABLE \n EAT";
+         : print "^n^OPEN CUPBOARD \n TAKE PLATE \n TAKE PAN \n TAKE NOODLES \n LEAVE";
+         : print "^n^\n OPEN FRIDGE \n TAKE VEGGIES \n TAKE CHEESE \n TAKE EGG \n LEAVE";
+         : print "^n^\n X STOVE \n PUT PAN ON STOVE \n PUT VEGGIES IN PAN \n WAIT \n PUT NOODLES IN PAN \n WAIT \n CRACK EGG \n WAIT \n PUT CHEESE IN PAN \n WAIT \n PLATE NOODLES \n LEAVE"; 
+         : print "^n^\n X TABLE \n EAT";
       }
       : choose "What kind of help do you need?";
+   }
+
+   : match "credit _ ; credits" {
+      : print "^n^----------- \n CREDITS \n -----------";
+      : print "<^i^Not Another Sad Meal> was created, written, and coded by <manonamora<12>>[https://manonamora.itch.io/] for the <^i^Recipe Jam<12>>[https://itch.io/jam/recipe-jam-24] and the <^i^SeedComp!<12>>[https://itch.io/jam/seedcomp24-planting-round].";
+      : print "It could not have been made without Aventuron (v.1.0.0 beta 78) or the help of the Adventuron Discord community (especially <eツ<12>>, <Garry<12>>, and <Grizel<12>>). The comfort taken from the food is inspired by the seed <^i^Comfort Food> by Pinkunz.";
+      : print "The game uses the Clairsys10 font by Paul Van Der Laan.";
    }
 }
