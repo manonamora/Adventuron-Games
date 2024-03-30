@@ -1,0 +1,444 @@
+######################################
+#  Adventuron                        #
+######################################
+
+start_at = entree
+game_information {
+
+   game_name        = Escape Game
+   game_shortname   = escapegame
+   written_by       = manonamora
+   year_of_release  = 2024
+   game_version     = 0.1.0
+   aimed_at  = [ children, teenagers, adults]
+}
+
+######################################
+#  Vocabulary                        #
+######################################
+
+vocabulary {
+   
+   : verb {aliases = [s, south, sud]}
+   : verb {aliases = [n, north, nord]}
+   : verb {aliases = [e, east, est]}
+   : verb {aliases = [w, o, west, ouest]}
+   : verb {aliases = [x, examiner, inspecter]}
+   : verb {aliases = [l, r, m, regarder]}
+   : verb {aliases = [i, inventaire]}
+   : verb {aliases = [save, sauver, sauvegarder]}
+   : verb {aliases = [charge, charger]}
+   : verb {aliases = [p, prendre, saisir, agripper, arracher, attraper, emparer, happer, ramasser, obtenir, approprier, confisquer, enlever, collecter, récupérer]}
+   : verb {aliases = [drop, laisser, poser, jeter, déposer]}
+   : verb {aliases = [q, quit, quitter, fin, recommencer, redémarrer, redémarrage, restart]}
+   : verb {aliases = [help, aide]}
+}
+
+######################################
+#  Themes                            #
+######################################
+
+themes {
+   my_theme : theme {
+      system_messages {
+         all_treasures_found_win_game                   = Félicitations, vous avez trouvé tous les trésors. Vous avez gagné !
+         already_in_container                           = ${entity} est déjà à l'intérieur du ${entity2}.
+         ask_new_game                                   = Souhaitez-vous commencer un nouveau jeu ?
+         ask_quit                                       = Souhaitez-vous quitter le jeu ?
+         be_more_specific                               = Sois plus précis ...\s
+         cannot_carry_any_more                          = Vous avez les mains pleines.
+         cannot_carry_any_more_weight                   = C'est trop lourd à porter.
+         cant_see_one_of_those                          = Vous ne pouvez pas en voir un.
+         dont_have_one_of_those                         = Vous n'en avez pas un !
+         exit_list_additional_exits_are_located_verbose = Des sorties supplémentaires se trouvent\s
+         exit_list_end_text                             = .
+         exit_list_end_text_verbose                     = .
+         exit_list_from_here_you_can_go_verbose         = Vous pouvez aller\s
+         exit_list_header_concise                       = Sorties :\s
+         exit_list_last_sep_verbose                     = \set\s
+         exit_list_sep_verbose                          = ,\s
+         exit_list_there_are_no_obvious_exits           = Il n'y a pas de sorties évidentes.
+         exit_list_to_the_verbose                       = vers le
+         exit_list_you_can_also_go_verbose              = Vous pouvez aussi aller\s
+         gamebook_question                              = Sélectionnez une option ...
+         i_cant_do_that                                 = Vous ne pouvez pas faire ça.
+         invalid_choice                                 = Choix invalide.
+         inventory_list_empty                           = Rien
+         inventory_list_end_text                        = .
+         inventory_list_final_separator                 = \set\s
+         inventory_list_header                          = Vous portez:\s
+         inventory_list_header_verbose                  = Vous portez\s
+         inventory_list_separator                       = ,\s
+         it_is_dark                                     = C'est sombre. Vous ne pouvez rien voir.
+         must_remove_first                              = Essayez d'abord de l'enlever.
+         not_carried                                    = Vous ne pouvez pas ${verb} quelque chose que vous ne portez pas.
+         not_present                                    = ${entity} n'est pas là.
+         nothing_here                                   = Il n'y a rien ici.
+         nothing_to_get                                 = Vous ne le trouvez pas.
+         object_list_empty                              = Rien
+         object_list_end_text                           = .
+         object_list_final_separator                    = \set\s
+         object_list_header                             = Vous voyez:\s
+         object_list_header_verbose                     = Vous voyez\s
+         object_list_header_verbose_after_initial       = Vous voyez également\s
+         object_list_separator                          = ,\s
+         ok                                             = OK
+         on_drop                                        = Vous déposez ${entity}.
+         on_get                                         = Vous prenez ${entity}.
+         on_put                                         = Vous mettez ${entity} dans ${entity2}.
+         on_put_non_container                           = ${entity} n'est pas un conteneur.
+         on_put_non_surface                             = ${entity} n'est pas une surface.
+         on_remove                                      = Vous enlevez ${entity}.
+         on_wear                                        = Vous portez ${entity}.
+         post_quit                                      = Vous avez quitté le jeu.
+         prompt                                         = >>
+         question_prompt_char                           = ?
+         there_is_nothing_you_can                       = Il n'y a rien que vous puissiez ${verb} pour le moment.
+         treasure_message                               = 
+         treasure_suffix                                = 
+         tutorial_message_prefix                        = Tutoriel:\s
+         unknown_noun                                   = Nom inconnu - "${noun}".
+         unknown_verb                                   = Verbe inconnu - "${verb}".
+         verb_noun_only                                 = Ce jeu ne nécessite que deux entrées de mots.
+         worn_suffix                                    = \s(porté)
+         you_already_wear                               = Vous portez déjà ça.
+         you_are_already_carrying                       = Vous avez déjà ${entity}.
+         you_are_not_holding                            = Vous ne tenez pas ${entity}.
+         you_cant_go_that_direction                     = Vous ne pouvez pas aller par là.
+         you_cant_wear                                  = Vous ne pouvez pas porter ça.
+         you_cant_wear_anything_else                    = Vous ne pouvez pas porter autre chose sans enlever quelque chose au préalable.
+         you_dont_wear                                  = Vous ne portez pas ça.
+         you_see_nothing_special                        = Vous ne voyez rien de spécial.
+         you_see_nothing_special_2                      = Vous ne pouvez pas interagir avec cela.
+      }
+      
+   }
+}
+
+######################################
+#  On Startup                        #
+######################################
+
+on_startup {
+   : print "Vous ne vous souvenez pas comment vous êtes arrivé ici, mais vous vous trouvez coincé dans ce bureau.";
+   : print "Il vous faut trouver un moyen de sortir d'ici...";
+   : press_any_key ;
+   
+}
+
+######################################
+#  Locations                         #
+######################################
+
+locations {
+
+   entree : location "Vous êtes dans la salle d'entrée." {
+      on_describe {
+         : print "La salle est simple, sans vraiment adornée de décoration. Vous pouvez voir deux portes: une en verre au sud, menant vers l'extérieur, et une en bois au nord." ;
+      }
+   };
+   
+   bureau : location "Vous êtes dans le bureau." ;
+   
+   piece_secrete : location "Vous êtes dans la pièce secrète." ;
+   
+   sortie : location "Vous êtes (enfin) dehors!" {
+      on_describe {
+         : print "Bravo! Vous avez réussit à vous échapper!" ;
+         : win_game ;
+      }
+   };
+   
+}
+
+######################################
+#  Connections                       #
+######################################
+
+connections {
+   
+   from, direction, to = [
+      entree, north, bureau, 
+      entree, south, sortie, 
+      bureau, east, piece_secrete, 
+   ]
+   
+}
+
+######################################
+#  Objects                           #
+######################################
+
+objects {
+
+   livre : object "un livre jaune" ;
+   cle : object "une clé" at = "piece_secrete";
+   plaque : scenery "une plaque de pression";
+   fenetre : scenery "une fenêtre" at = "bureau";
+   bibliothèque : scenery "une bibliothèque" at = "bureau";
+  
+}
+
+
+######################################
+#  Barriers                          #
+######################################
+
+barriers {
+   
+   biblio : block {
+      location = piece_secrete
+      block_when = livre_dans_bilio
+   }
+      
+   mecanisme : block_path {
+      from    = piece_secrete
+      to      = bureau
+      block_when_not = poids
+   }
+   
+   porte : door {
+      from = entree
+      to   = sortie
+      key  = cle
+      messages {
+         bang_into_door = Votre chemin est bloqué par une porte.
+         cant_open_locked_door = La porte est verrouillée.
+      }
+   }
+   
+}
+
+######################################
+#  Booleans                          #
+######################################
+
+booleans {
+   
+   livre_dans_bilio : boolean default = "true" ;
+   poids : boolean default = "true" ;
+   fenetre : boolean;
+   
+   
+}
+
+######################################
+#  On Command                        #
+######################################
+
+on_command {
+   
+   : match "x porte"  {
+      : if (is_at "entree") {
+         : print "Vous devez indiquer quelle porte. Celle en verre ou cette en bois." ;
+      }
+   }
+   : match "x porte en verre"  {
+      : if (is_at "entree") {
+         : print "Vous examinez la porte de sortie. Celle-ci est en verre. Vous y voyez un logo: Escape me.";
+         : if (is_blocking "porte") {
+            : print "La porte est verrouillée." ;
+         }
+         : else {
+            : print "La porte est déverrouillée" ;
+         }
+         
+      }
+   }
+   : match "x porte en bois"  {
+      : if (is_at "entree" || is_at "bureau") {
+         : print "Vous examinez la porte en bois. Il n'y a rien d'intéressant.";
+      }
+   }
+   : match "x decoration"  {
+      : if (is_at "entree") {
+         : print "Il n'y a rien d'intéressant.";
+      }
+   }
+   
+   
+   : match "x fenetre"  {
+      : if (is_at "bureau") {
+         : print "Vous vous approchez de la fenêtre. Celle-ci est une simple fenêtre de bureau, avec une poignée pour l'ouvrir.";
+         : print "À travers la fenêtre, vous voyez l'extérieur du bâtiment. Et que vous vous trouvez au premier étage.";
+         : if (!fenetre) {
+            : print "Peut-être que vous pourriez vous échaper par la fenêtre?" ;
+         }
+         : else {
+            : print "Malheureusement, vous ne pouvez pas sortir de cette pièce par celle-ci." ;
+         }
+      }
+   }
+   
+   : match "ouvrir fenetre"  {
+      : if (is_at "bureau") {
+         : print "Vous essayez tant bien que mal de tourner la poignée, mais celle-ci est inamovible." ;
+         : set_true "fenetre" ;
+         
+      }
+   }
+   
+   
+   : match "x bibliotheque"  {
+      : if (is_at "bureau" && has_not_created "livre") {
+         : create "livre";
+         : print "En inspectant la bibliothèque, vous trouvez des livres bien poussiérieux. Sauf autour... d'un livre jaune en plein milieu.";
+      }
+      : else_if (is_at "bureau" && !livre_dans_bilio) {
+         : print "La bibliothèque est séparé en deux parties, l'ouverture menant vers une pièce secrète.";
+      }
+      : else_if (is_at "bureau") {
+         : print "En inspectant la bibliothèque, vous trouvez des livres bien poussiérieux. Sauf autour... du livre jaune en plein milieu.";
+      }
+   }
+   
+   : match "prendre livre"  {
+      : if (is_present "livre" && !is_carried "livre") {
+         : print "Vous prenez le livre.";
+         : pocket "livre" ;
+         : if (is_at "bureau" && livre_dans_bilio) {
+            : print "Dès que celui-ci n'est plus dans la bilbiothèque, celle-ci se sépare en deux, révélant une nouvelle pièce." ;
+            : set_false "livre_dans_bilio" ;
+         }
+      }
+   }
+   : match "ranger livre"  {
+      : if (is_carried "livre") {
+         : if (is_at "bureau") {
+            : print "Vous rangez le livre dans la bibliothère.";
+            : drop "livre" quiet = "true" ;
+            : print "Dès que celui-ci retrouve sa place dans la bilbiothèque, celle-ci se referme, cachant de nouveau la pièce." ;
+            : set_true "livre_dans_bilio" ;
+         }
+         : else {
+            : print "Vous ne pensez pas que vous pouvez ranger le livre où que ce soit." ;
+         }
+      }
+   }
+   
+   
+   : match "x livre"  {
+      : if (is_carried "livre") {
+         : print "En examinant le livre jaune, vous réalisez qu'il n'a pas de titre sur la couverture, et qu'il est bien trop léger pour sa taille. Vous ne pouvez pas non plus l'ouvrir pour le lire..." ;
+      }
+      : else_if (is_present "livre") {
+         : print "Vous avez besoin de prendre le livre pour l'examiner." ;
+      }
+      
+   }
+   
+   
+   : match "x cle"  {
+      : if (is_present "cle") {
+         : print "Une clé. Sûrement celle de la porte d'entrée." ;
+         : if (!has_taken "cle") {
+            : print "Vous réalisez que la clé a été posé sur une plaque de pression." ;
+            : create "plaque" ;
+         }
+      }
+   }
+   
+   
+   : match "x plaque;x plaque de pression;appuyez plaque"  {
+      : if (is_at "piece_secrete") {
+         : print "Vous examinez la plaque de pression. En appuyant un petit peu dessus, vous sentez qu'un mécanisme est relié à cette plaque." ;
+         : if (!has_taken "cle") {
+            : print "Il est for possible que quelque chose arrive si vous prenez la clé." ;
+         }
+         : else_if (poids) {
+            : print "Un poids doit rester sur cette plaque afin que la porte reste ouverte." ;
+         }
+         : else_if (!poids) {
+            : print "Vous pouvez aussi voir que la porte derrière vous se réouvre lorsque vous appuyez. Mais aussi qu'elle se referme si rien n'est posé dessus..." ;
+         }
+      }
+   }
+   
+   : match "echanger cle pour livre"  {
+      : if (is_at "piece_secrete") {
+         : if (is_present "livre") {
+            : print "Vous prenez une grande inspiration, et échangez rapidement la clé pour le livre jaune. Derrière vous, vous entendez un mécanisme se mettre en route puis s'arrêter lorsque le livre touche la plaque de pression." ;
+            : print "La clé se trouve maintenant en votre possession." ;
+            : drop "livre" ;
+            : pocket "cle" ;
+         }
+         : else {
+            : print "Vous ne pouvez pas faire ceci sans le livre." ;
+         }
+      }
+   }
+   
+   : match "prende cle"  {
+      : if (is_at "piece_secrete") {
+         : print "Lorsque vous récupérez la clé posée sur la plaque de pression, un mécanisme s'enclenche, fermant derrière vous la voie de sortie. Vous êtes maintenant coincé dans cette pièce.";
+         : if (!is_present "plaque") {
+            : create "plaque" ;
+         }
+         : pocket "cle" ;
+         : set_false "poids" ;
+      }
+      : else {
+         : print "Vous récupérez la clé." ;
+         : pocket "cle" ;
+      }
+      
+   }
+   
+   : match "poser cle; poser cle sur plaque"  {
+      : if (is_present "cle") {
+         : drop "cle" ;
+         : if (is_at "piece_secrete" && !poids) {
+            : print "Vous redéposez la clé sur la plaque de pression, et le mécanisme réouvre la porte derrière vous.";
+            : set_true "poids" ;
+         }
+         : else {
+            : print "Vous posez la clé.";
+         }
+      }
+      : else {
+         : print "Vous n'avez pas la clé";
+      }
+   }
+   : match "poser livre; poser cle sur plaque"  {
+      : if (is_present "livre") {
+         : drop "livre" ;
+         : if (is_at "piece_secrete" && !poids) {
+            : print "Vous redéposez le livre jaune sur la plaque de pression, et le mécanisme réouvre la porte derrière vous.";
+            : set_true "poids" ;
+         }
+         : else {
+            : print "Vous posez le livre.";
+         }
+      }
+      : else {
+         : print "Vous n'avez pas le livre";
+      }
+   }
+   
+   : match "ouvrir porte;ouvrir porte avec cle; ouvrir porte en verre"  {
+      : if (is_at "entree") {
+         : if (is_present "cle") {
+            : print "Vous insérez la clé dans la serrure et déverrouillez la porte. La voici maintenant grand ouverte!" ;
+            : door_operation door = "porte"  operation = "open_unlock" ;
+         }
+         : else {
+            : print "Vous ne pouvez pas ouvrir la porte sans la clé.";  
+         }
+     
+      }
+   }
+   
+   : match "fin -" {
+      : add_choice "Oui"  {
+         : lose_game;
+      }
+      : add_choice "No"  {
+         : done;
+      }
+      : choose "<Souhaitez-vous recommencer le jeu ?<6>>" ;
+   }
+}
+
+
+
+
