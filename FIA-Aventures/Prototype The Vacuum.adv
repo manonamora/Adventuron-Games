@@ -1,0 +1,256 @@
+start_at = start_state
+
+game_information {
+
+   game_name        = The Vacuum
+   game_shortname   = thevacuum
+   written_by       = manonamora
+   year_of_original = 2024
+   year_of_release  = 2024
+   uuid             = F418C788-434B-4685-A273-99ED09E7CB7C
+   short_synopsis   = Fix the Vacuum Cleaner
+   game_version     = 0.1.0
+   aimed_at  = [ children, teenagers, adults]
+}
+
+themes {
+   
+   my_theme : theme {
+      extends = two
+      system_messages {
+         object_list_end_text                           = 
+      }
+      
+   }
+}
+
+locations {
+   start_state : location {
+      on_describe {
+         : print "<ASSIGNMENT: FIX VACUUM CLEANER<10>>";
+         : print "<ALLOTTED TIME: 10min<10>>";
+         : print "<REPAIR BOX SET TO VACUUM PARTS<10>>";
+         : press_any_key ;
+         : clear_screen;
+         : goto "living_room";
+         : redescribe;
+         
+      }
+   }
+   living_room : location "^b^Living Room";
+   end_state : location {
+      on_describe {
+         : print "<ASSIGNMENT: COMPLETE<10>>";
+         :press_any_key ;
+         : print "<\"Oh, thank gosh...\"<12>>";
+         : print "<\"So? FIA fixed it?\"<13>>";
+         : print "<\"Lil guy did it again!\"<12>>";
+         : print "<\"What did you forget to check, huh?\"<13>>";
+         : print "<\"MARY!\"<12>>";
+         : win_game ;
+      }
+   };
+   
+}
+booleans {
+   
+   plugged : boolean default = "false" ;
+   opened : boolean default = "false" ;
+   filter : boolean default = "false" ;
+   bag : boolean default = "false" ;
+   hole : boolean default = "true" ;
+   cleared : boolean default = "false" ;
+   hair  : boolean default = "true" ;
+}
+
+
+objects {
+   vacuum   : scenery "vacuum cleaner" at="living_room";
+   repair : object "repair box" at = "inventory" ;
+   
+}
+
+on_startup {
+   : print "<\"Gosh darn it! Not again!\"<12>>";
+   : press_any_key ;
+   : print "<\"Mary!!\"<12>>";
+   : print "<\"What? What it it?\"<13>>";
+   : print "<\"The vacuum cleaner's busted.\"<12>>";
+   : print "<\"Did you try fixing it?\"<13>>";
+   : print "<\"Yes, Mary. Of course I have. But I think it's really done for.<12>> <[[SIGH]]<4>> <Of all the times to do this, it had to be now...\"<12>>";
+   : print "<\"Well, yes. That's  quite inconveient.\"<13>>";
+   : print "<\"Mary! They'll be here in 30min! And the room isn't vacuumed yet!\"<12>>";
+   : print "<\"Well, get FIA to fix it, then. Or get a broom.\"<13>>";
+   : print "<\"Fine\"<12>>";
+   : press_any_key ;
+   : redescribe;
+}
+
+on_command {
+   : match "x vacuum ; x vacuum cleaner *"  {
+      : print "^n^Simple vacuum cleaner: \n- brush \n- pole \n- hose \n- on/off button \n- locking latch \n- plug";
+      : print "model includes filter and dust bag";
+      : print "Still broken?";
+   }
+   : match "take vacuum"  {
+      : print "No time! Fix it yourself.";
+   }
+   : match "press button; turn vacuum on *; power vacuum"  {
+      : if (opened) {
+         : print "Can't. Vacuum open.";
+      }
+      : else {
+         : print "Pressed on/off button and...";
+         : if (plugged && !opened && filter && bag && !hole && cleared && !hair) {
+         : print "the vacuum works again!";
+         : press_any_key ;
+         : goto "end_state";
+         : redescribe;
+      }
+         : else {
+         : print "... nothing happens.";
+      }
+      }
+   }
+   : match "x plug" {
+      : if (plugged) {
+         : print "Plug already plugged.";
+      }
+      : else {
+         : print "Plug lying on floor.";
+      }
+   }
+   : match "plug vacuum; plug plug"  {
+      : print "Plug in socket. Vacuum plugged.";
+      : set_true "plugged";
+   }
+   : match "unplug vacuum; unplug plug"  {
+      : print "Plug removed. Vacuum unplugged";
+      : set_false "plugged" ;
+   }
+   : match "open vacuum; press latch; pull latch; open latch"  {
+      : print "Vacuum open. Can see bag and filter.";
+      : set_true "opened" ;
+   }
+   : match "close vacuum; push latch"  {
+      : print "Vacuum closed.";
+      : set_false "opened" ;
+      
+   }
+   : match "x filter"  {
+      : if (!opened) {
+         : print "Vacuum closed. No x-way vision.";
+      }
+      : else {
+         : if (!filter) {
+            : print "Dark disgusting old filter.";
+         }
+         : else {
+            : print "New fresh filter!";
+         }
+      }
+   }
+   : match "change filter"  {
+      : if (!opened) {
+         : print "Can't. Vacuum closed.";
+      }
+      : else_if (!filter) {
+         : print "Filter changed.";
+         : set_true "filter" ;
+      }
+      : else {
+         : print "Filter already changed.";
+         
+      }
+   }
+   : match "x bag"  {
+      : if (!opened) {
+         : print "Vacuum closed. No x-way vision.";
+      }
+      : else {
+         : if (!bag) {
+            : print "Full dirty bag.";
+         }
+         : else {
+            : print "New fresh bag!";
+         }
+      }
+   }
+   : match "change bag"  {
+      : if (!opened) {
+         : print "Can't. Vacuum closed.";
+      }
+      : else_if (!bag) {
+         : print "Bag changed.";
+         : set_true "bag" ;
+      }
+      : else {
+         : print "Bag already changed.";
+         
+      }
+   }
+   : match "x hose"  {
+      : if (hole) {
+         : print "Vacuum hose. Perforated.";
+      }
+      : else {
+         : print "Vacuum hose. Patched.";
+      }
+   }
+   : match "fix hole;repair hole"  {
+      : if (hole) {
+         : print "Hole fixed.";
+         : set_false "hole" ;
+      }
+      : else {
+         : print "Hole already fixed.";
+         
+      }
+   }
+   : match "x pole"  {
+      : print "Vacuum hollow pole.";
+      : if (!cleared) {
+         : append "Congested.";
+      }
+      : else {
+         : append "Empty.";
+      }
+   }
+   : match "clear pole; clean pole"  {
+      : if (!cleared) {
+         : print "Pole cleared.";
+         : set_true "cleared" ;
+      }
+      : else {
+         : print "Pole already cleared.";
+      }
+   }
+   : match "x brush"  {
+      : print "Vacuum brush. Rotatable.";
+      : if (hair) {
+         : print "Roller full of hair.";
+      }
+      : else {
+         : print "Cleaned roller.";
+      }
+   }
+   : match "remove hair;clean roller" {
+      : if (hair) {
+         : print "Hair removed.";
+         : set_false "hair" ;
+      }
+      : else {
+         : print "Already done.";
+         
+      }
+   }
+   : match "x me"  {
+      : print "Home repair robot. Model F1X-1T-4LL.";
+   }
+   : match "x box "  {
+      : print "Repair Box. Build tools and items wanted for repair";
+   }
+   
+}
+
+
